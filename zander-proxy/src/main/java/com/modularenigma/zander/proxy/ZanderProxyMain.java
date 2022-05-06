@@ -2,6 +2,9 @@ package com.modularenigma.zander.proxy;
 
 import com.modularenigma.zander.proxy.commands.ping;
 import com.modularenigma.zander.proxy.events.UserChatEvent;
+import com.modularenigma.zander.proxy.events.UserOnDisconnect;
+import com.modularenigma.zander.proxy.events.UserOnLogin;
+import com.modularenigma.zander.proxy.events.UserOnSwitch;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -35,6 +38,9 @@ public class ZanderProxyMain extends Plugin implements Listener {
 
         // Event Registry
         getProxy().getPluginManager().registerListener(this, new UserChatEvent());
+        getProxy().getPluginManager().registerListener(this, new UserOnLogin());
+        getProxy().getPluginManager().registerListener(this, new UserOnDisconnect());
+        getProxy().getPluginManager().registerListener(this, new UserOnSwitch());
 
     }
 
