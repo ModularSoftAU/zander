@@ -1,5 +1,6 @@
 package com.modularenigma.zander.proxy.events;
 
+import com.modularenigma.zander.proxy.ConfigurationManager;
 import com.modularenigma.zander.proxy.ZanderProxyMain;
 import com.modularenigma.zander.proxy.api.Request;
 import com.modularenigma.zander.proxy.api.Response;
@@ -27,7 +28,7 @@ public class UserChatEvent implements Listener {
         plugin.getProxy().getConsole().sendMessage(new TextComponent(player.getDisplayName() + ": " + player.getServer().getInfo().getName()));
 
         Request req = Request.builder()
-                .setURL("http://localhost:8080/api/discord/chat")
+                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/discord/chat")
                 .setMethod(Request.Method.POST)
                 .setRequestBody(chat.toString())
                 .build();

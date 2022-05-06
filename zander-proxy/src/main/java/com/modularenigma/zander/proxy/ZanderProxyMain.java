@@ -9,10 +9,12 @@ import net.md_5.bungee.api.plugin.Plugin;
 
 public class ZanderProxyMain extends Plugin implements Listener {
     private static ZanderProxyMain plugin;
+    public static ConfigurationManager configurationManager;
 
     @Override
     public void onEnable() {
         setInstance(this);
+        configurationManager.initConfig();
 
         // Init Message
         getProxy().getConsole().sendMessage(new TextComponent(ChatColor.GREEN + "\n\nZander Proxy has been enabled.\nRunning Version " + plugin.getDescription().getVersion() + "\nGitHub Repository: https://github.com/ModularEnigma/zander\nCreated by ModularEnigma\n\n"));
