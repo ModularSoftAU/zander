@@ -1,5 +1,9 @@
 package com.modularenigma.zander.proxy;
 
+import com.modularenigma.zander.proxy.commands.ping;
+import com.modularenigma.zander.proxy.events.UserChatEvent;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 
@@ -8,9 +12,15 @@ public class ZanderProxyMain extends Plugin implements Listener {
 
     @Override
     public void onEnable() {
+        setInstance(this);
+
+        // Init Message
+        getProxy().getConsole().sendMessage(new TextComponent(ChatColor.GREEN + "\n\nZander Proxy has been enabled.\nRunning Version " + plugin.getDescription().getVersion() + "\nGitHub Repository: https://github.com/ModularEnigma/zander\nCreated by ModularEnigma\n\n"));
 
         // Command Registry
         getProxy().getPluginManager().registerCommand(this, new ping());
+
+
 //        getProxy().getPluginManager().registerCommand(this, new rules());
 //        getProxy().getPluginManager().registerCommand(this, new discord());
 //        getProxy().getPluginManager().registerCommand(this, new ranks());
@@ -21,11 +31,22 @@ public class ZanderProxyMain extends Plugin implements Listener {
 //        getProxy().getPluginManager().registerCommand(this, new seen());
 //        getProxy().getPluginManager().registerCommand(this, new playtime());
 
+        // Event Registry
+        getProxy().getPluginManager().registerListener(this, new UserChatEvent());
+
     }
 
     @Override
     public void onDisable() {
 
+    }
+
+    public static ZanderProxyMain getInstance() {
+        return plugin;
+    }
+
+    private static void setInstance(ZanderProxyMain instance) {
+        ZanderProxyMain.plugin = instance;
     }
 
 }
