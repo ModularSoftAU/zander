@@ -12,6 +12,7 @@ public class ReportCreate {
     @Getter String reportedUser;
     @Getter String reporterUser;
     @Getter String reason;
+    @Getter String platform;
     @Getter String server;
 
     @Override

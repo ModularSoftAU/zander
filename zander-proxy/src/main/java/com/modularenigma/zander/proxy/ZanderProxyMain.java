@@ -1,6 +1,7 @@
 package com.modularenigma.zander.proxy;
 
 import com.modularenigma.zander.proxy.commands.ping;
+import com.modularenigma.zander.proxy.commands.report;
 import com.modularenigma.zander.proxy.events.UserChatEvent;
 import com.modularenigma.zander.proxy.events.UserOnDisconnect;
 import com.modularenigma.zander.proxy.events.UserOnLogin;
@@ -24,6 +25,7 @@ public class ZanderProxyMain extends Plugin implements Listener {
 
         // Command Registry
         getProxy().getPluginManager().registerCommand(this, new ping());
+        getProxy().getPluginManager().registerCommand(this, new report());
 
 
 //        getProxy().getPluginManager().registerCommand(this, new rules());
@@ -40,7 +42,7 @@ public class ZanderProxyMain extends Plugin implements Listener {
         getProxy().getPluginManager().registerListener(this, new UserChatEvent());
         getProxy().getPluginManager().registerListener(this, new UserOnLogin());
         getProxy().getPluginManager().registerListener(this, new UserOnDisconnect());
-        getProxy().getPluginManager().registerListener(this, new UserOnSwitch());
+//        getProxy().getPluginManager().registerListener(this, new UserOnSwitch());
 
     }
 
