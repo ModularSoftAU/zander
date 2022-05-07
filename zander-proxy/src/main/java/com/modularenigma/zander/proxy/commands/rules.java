@@ -26,6 +26,24 @@ public class rules extends Command {
 
             // GET request to link to rules.
 
+//            String uri = ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration";
+//            System.out.println("Uri: " + uri);
+//            Request req = Request.builder()
+//                    .setURL(uri)
+//                    .setMethod(Request.Method.GET)
+//                    .build();
+//
+//            Response res = req.execute();
+//            plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + res.getStatusCode() + "): " + res.getBody().toJSONString()));
+
+            Request req = Request.builder()
+                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration")
+                .setMethod(Request.Method.GET)
+                .build();
+
+            Response res = req.execute();
+            plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + res.getStatusCode() + "): " + res.getBody().toJSONString()));
+
             TextComponent message = new TextComponent("Please read and abide by the Network rules which you can find on our website here: " + "rules");
             message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "rules"));
             player.sendMessage(message);

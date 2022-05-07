@@ -7,6 +7,7 @@ import com.modularenigma.zander.proxy.api.Response;
 import com.modularenigma.zander.proxy.model.discord.DiscordChat;
 import com.modularenigma.zander.proxy.model.discord.DiscordJoin;
 import com.modularenigma.zander.proxy.model.session.SessionCreate;
+import com.modularenigma.zander.proxy.model.user.UserCreation;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
@@ -21,8 +22,24 @@ public class UserOnLogin implements Listener {
     public void UserLoginEvent (PostLoginEvent event) {
         ProxiedPlayer player = event.getPlayer();
 
+        // Send User Creation API POST for new user
+        UserCreation createUser = UserCreation.builder()
+                .uuid(player.getUniqueId())
+                .username(player.getDisplayName())
+                .build();
+
+        Request createUserReq = Request.builder()
+                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/user/new")
+                .setMethod(Request.Method.POST)
+                .setRequestBody(createUser.toString())
+                .build();
+
+        Response createUserRes = createUserReq.execute();
+        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + createUserRes.getStatusCode() + "): " + createUserRes.getBody().toJSONString()));
+
+
         // Start Session API POST
-        // Commented out till SQL is clarrified.
+        // Commented out till SQL is clarified.
 
 //        SessionCreate createSession = SessionCreate.builder()
 //                .uuid(player.getUniqueId())
