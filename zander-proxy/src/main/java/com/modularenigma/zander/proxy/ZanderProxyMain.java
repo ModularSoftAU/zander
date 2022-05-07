@@ -1,7 +1,6 @@
 package com.modularenigma.zander.proxy;
 
-import com.modularenigma.zander.proxy.commands.ping;
-import com.modularenigma.zander.proxy.commands.report;
+import com.modularenigma.zander.proxy.commands.*;
 import com.modularenigma.zander.proxy.events.UserChatEvent;
 import com.modularenigma.zander.proxy.events.UserOnDisconnect;
 import com.modularenigma.zander.proxy.events.UserOnLogin;
@@ -26,16 +25,12 @@ public class ZanderProxyMain extends Plugin implements Listener {
         // Command Registry
             getProxy().getPluginManager().registerCommand(this, new ping());
             getProxy().getPluginManager().registerCommand(this, new report());
-
-
-//        getProxy().getPluginManager().registerCommand(this, new rules());
-//        getProxy().getPluginManager().registerCommand(this, new discord());
-//        getProxy().getPluginManager().registerCommand(this, new ranks());
-//        getProxy().getPluginManager().registerCommand(this, new vote());
-//        getProxy().getPluginManager().registerCommand(this, new guides());
-//        getProxy().getPluginManager().registerCommand(this, new website());
-//        getProxy().getPluginManager().registerCommand(this, new seen());
-//        getProxy().getPluginManager().registerCommand(this, new playtime());
+//            getProxy().getPluginManager().registerCommand(this, new rules());
+//            getProxy().getPluginManager().registerCommand(this, new discord());
+//            getProxy().getPluginManager().registerCommand(this, new guides());
+//            getProxy().getPluginManager().registerCommand(this, new ranks());
+//            getProxy().getPluginManager().registerCommand(this, new vote());
+//            getProxy().getPluginManager().registerCommand(this, new website());
 
         // Event Registry
             getProxy().getPluginManager().registerListener(this, new UserChatEvent());
