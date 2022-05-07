@@ -11,6 +11,7 @@ public class SessionCreate {
 
     @Getter UUID uuid;
     @Getter String ipAddress;
+    @Getter String server;
 
     @Override
     public String toString() {

@@ -6,6 +6,7 @@ import com.modularenigma.zander.proxy.api.Request;
 import com.modularenigma.zander.proxy.api.Response;
 import com.modularenigma.zander.proxy.model.discord.DiscordChat;
 import com.modularenigma.zander.proxy.model.discord.DiscordJoin;
+import com.modularenigma.zander.proxy.model.session.SessionCreate;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
@@ -20,18 +21,37 @@ public class UserOnLogin implements Listener {
     public void UserLoginEvent (PostLoginEvent event) {
         ProxiedPlayer player = event.getPlayer();
 
+        // Start Session API POST
+        // Commented out till SQL is clarrified.
+
+//        SessionCreate createSession = SessionCreate.builder()
+//                .uuid(player.getUniqueId())
+//                .ipAddress(player.getAddress().toString())
+//                .server(event.getPlayer().getServer().getInfo().getName())
+//                .build();
+//
+//        Request createSessionReq = Request.builder()
+//                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/session/create")
+//                .setMethod(Request.Method.POST)
+//                .setRequestBody(createSession.toString())
+//                .build();
+//
+//        Response createSessionRes = createSessionReq.execute();
+//        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + createSessionRes.getStatusCode() + "): " + createSessionRes.getBody().toJSONString()));
+
+        // Send Discord API POST for join message
         DiscordJoin join = DiscordJoin.builder()
                 .username(player.getDisplayName())
                 .build();
 
-        Request req = Request.builder()
+        Request discordJoinReq = Request.builder()
                 .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/discord/join")
                 .setMethod(Request.Method.POST)
                 .setRequestBody(join.toString())
                 .build();
 
-        Response res = req.execute();
-        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + res.getStatusCode() + "): " + res.getBody().toJSONString()));
+        Response discordJoinRes = discordJoinReq.execute();
+        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + discordJoinRes.getStatusCode() + "): " + discordJoinRes.getBody().toJSONString()));
 
     }
 

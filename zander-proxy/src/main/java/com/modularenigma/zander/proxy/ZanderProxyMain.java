@@ -24,14 +24,13 @@ public class ZanderProxyMain extends Plugin implements Listener {
         getProxy().getConsole().sendMessage(new TextComponent(ChatColor.GREEN + "\n\nZander Proxy has been enabled.\nRunning Version " + plugin.getDescription().getVersion() + "\nGitHub Repository: https://github.com/ModularEnigma/zander\nCreated by ModularEnigma\n\n"));
 
         // Command Registry
-        getProxy().getPluginManager().registerCommand(this, new ping());
-        getProxy().getPluginManager().registerCommand(this, new report());
+            getProxy().getPluginManager().registerCommand(this, new ping());
+            getProxy().getPluginManager().registerCommand(this, new report());
 
 
 //        getProxy().getPluginManager().registerCommand(this, new rules());
 //        getProxy().getPluginManager().registerCommand(this, new discord());
 //        getProxy().getPluginManager().registerCommand(this, new ranks());
-//        getProxy().getPluginManager().registerCommand(this, new report());
 //        getProxy().getPluginManager().registerCommand(this, new vote());
 //        getProxy().getPluginManager().registerCommand(this, new guides());
 //        getProxy().getPluginManager().registerCommand(this, new website());
@@ -39,10 +38,10 @@ public class ZanderProxyMain extends Plugin implements Listener {
 //        getProxy().getPluginManager().registerCommand(this, new playtime());
 
         // Event Registry
-        getProxy().getPluginManager().registerListener(this, new UserChatEvent());
-        getProxy().getPluginManager().registerListener(this, new UserOnLogin());
-        getProxy().getPluginManager().registerListener(this, new UserOnDisconnect());
-//        getProxy().getPluginManager().registerListener(this, new UserOnSwitch());
+            getProxy().getPluginManager().registerListener(this, new UserChatEvent());
+            getProxy().getPluginManager().registerListener(this, new UserOnLogin());
+            getProxy().getPluginManager().registerListener(this, new UserOnDisconnect());
+            getProxy().getPluginManager().registerListener(this, new UserOnSwitch());
 
     }
 

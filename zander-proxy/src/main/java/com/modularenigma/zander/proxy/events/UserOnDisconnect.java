@@ -6,6 +6,8 @@ import com.modularenigma.zander.proxy.api.Request;
 import com.modularenigma.zander.proxy.api.Response;
 import com.modularenigma.zander.proxy.model.discord.DiscordJoin;
 import com.modularenigma.zander.proxy.model.discord.DiscordLeave;
+import com.modularenigma.zander.proxy.model.session.SessionCreate;
+import com.modularenigma.zander.proxy.model.session.SessionDestroy;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
@@ -22,18 +24,35 @@ public class UserOnDisconnect implements Listener {
 
         if (player.isConnected()) return;
 
+        // Destory Session API POST
+        // Commented out till SQL is clarrified.
+
+//        SessionDestroy destroySession = SessionDestroy.builder()
+//                .uuid(player.getUniqueId())
+//                .build();
+//
+//        Request destroySessionReq = Request.builder()
+//                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/session/destroy")
+//                .setMethod(Request.Method.POST)
+//                .setRequestBody(destroySession.toString())
+//                .build();
+//
+//        Response destroySessionRes = destroySessionReq.execute();
+//        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + destroySessionRes.getStatusCode() + "): " + destroySessionRes.getBody().toJSONString()));
+
+        // Send Discord API POST for join message
         DiscordLeave leave = DiscordLeave.builder()
                 .username(player.getDisplayName())
                 .build();
 
-        Request req = Request.builder()
+        Request discordLeaveReq = Request.builder()
                 .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/discord/leave")
                 .setMethod(Request.Method.POST)
                 .setRequestBody(leave.toString())
                 .build();
 
-        Response res = req.execute();
-        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + res.getStatusCode() + "): " + res.getBody().toJSONString()));
+        Response discordLeaveRes = discordLeaveReq.execute();
+        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + discordLeaveRes.getStatusCode() + "): " + discordLeaveRes.getBody().toJSONString()));
 
     }
 
