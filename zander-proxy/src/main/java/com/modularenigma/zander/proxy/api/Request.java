@@ -52,9 +52,8 @@ public class Request {
                 .header("Content-Type", "application/json");
 
         // Include the body of the Request
-        HttpRequest.BodyPublisher content = HttpRequest.BodyPublishers.ofString(requestBody);
         switch (requestMethod) {
-            case POST -> builder.POST(content);
+            case POST -> builder.POST(HttpRequest.BodyPublishers.ofString(requestBody));
             case GET -> builder.GET();
         }
 
