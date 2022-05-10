@@ -2,8 +2,8 @@ package com.modularenigma.zander.proxy.events;
 
 import com.modularenigma.zander.proxy.ConfigurationManager;
 import com.modularenigma.zander.proxy.ZanderProxyMain;
-import com.modularenigma.zander.proxy.api.Request;
-import com.modularenigma.zander.proxy.api.Response;
+import io.github.ModularEnigma.Request;
+import io.github.ModularEnigma.Response;
 import com.modularenigma.zander.proxy.model.discord.DiscordChat;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;

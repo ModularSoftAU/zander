@@ -2,16 +2,13 @@ package com.modularenigma.zander.proxy.events;
 
 import com.modularenigma.zander.proxy.ConfigurationManager;
 import com.modularenigma.zander.proxy.ZanderProxyMain;
-import com.modularenigma.zander.proxy.api.Request;
-import com.modularenigma.zander.proxy.api.Response;
-import com.modularenigma.zander.proxy.model.discord.DiscordJoin;
-import com.modularenigma.zander.proxy.model.discord.DiscordLeave;
-import com.modularenigma.zander.proxy.model.session.SessionCreate;
 import com.modularenigma.zander.proxy.model.session.SessionDestroy;
+import io.github.ModularEnigma.Request;
+import io.github.ModularEnigma.Response;
+import com.modularenigma.zander.proxy.model.discord.DiscordLeave;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
-import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -24,23 +21,25 @@ public class UserOnDisconnect implements Listener {
 
         if (player.isConnected()) return;
 
+        //
         // Destory Session API POST
-        // Commented out till SQL is clarrified.
+        //
+        SessionDestroy destroySession = SessionDestroy.builder()
+                .uuid(player.getUniqueId())
+                .build();
 
-//        SessionDestroy destroySession = SessionDestroy.builder()
-//                .uuid(player.getUniqueId())
-//                .build();
-//
-//        Request destroySessionReq = Request.builder()
-//                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/session/destroy")
-//                .setMethod(Request.Method.POST)
-//                .setRequestBody(destroySession.toString())
-//                .build();
-//
-//        Response destroySessionRes = destroySessionReq.execute();
-//        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + destroySessionRes.getStatusCode() + "): " + destroySessionRes.getBody().toJSONString()));
+        Request destroySessionReq = Request.builder()
+                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/session/destroy")
+                .setMethod(Request.Method.POST)
+                .setRequestBody(destroySession.toString())
+                .build();
 
-        // Send Discord API POST for join message
+        Response destroySessionRes = destroySessionReq.execute();
+        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + destroySessionRes.getStatusCode() + "): " + destroySessionRes.getBody().toJSONString()));
+
+        //
+        // Send Discord API POST for disconnect message
+        //
         DiscordLeave leave = DiscordLeave.builder()
                 .username(player.getDisplayName())
                 .build();

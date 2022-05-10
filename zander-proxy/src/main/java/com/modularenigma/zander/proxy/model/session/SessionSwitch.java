@@ -10,6 +10,7 @@ import java.util.UUID;
 public class SessionSwitch {
 
     @Getter UUID uuid;
+    @Getter String server;
     
     @Override
     public String toString() {

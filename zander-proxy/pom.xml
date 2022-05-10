@@ -30,6 +30,11 @@
             <id>papermc</id>
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
+
+        <repository>
+            <id>maven2</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -51,6 +56,11 @@
             <artifactId>lombok</artifactId>
             <version>1.18.22</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.ModularEnigma</groupId>
+            <artifactId>Requests</artifactId>
+            <version>1.0.1</version>
         </dependency>
     </dependencies>
 

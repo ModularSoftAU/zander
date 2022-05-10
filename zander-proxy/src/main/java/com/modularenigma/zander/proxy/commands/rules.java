@@ -2,9 +2,8 @@ package com.modularenigma.zander.proxy.commands;
 
 import com.modularenigma.zander.proxy.ConfigurationManager;
 import com.modularenigma.zander.proxy.ZanderProxyMain;
-import com.modularenigma.zander.proxy.api.Request;
-import com.modularenigma.zander.proxy.api.Response;
-import net.md_5.bungee.api.ChatColor;
+import io.github.ModularEnigma.Request;
+import io.github.ModularEnigma.Response;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -31,7 +30,7 @@ public class rules extends Command {
                 .build();
 
             Response res = req.execute();
-            plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + res.getStatusCode() + "): " + res.getBody().toJSONString()));
+            plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + res.getStatusCode() + "): " + res.getBody().get("data.siteAddress") ));
 
             TextComponent message = new TextComponent("Please read and abide by the " + " rules which you can find on our website here: " + "rules");
             message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "rules"));
