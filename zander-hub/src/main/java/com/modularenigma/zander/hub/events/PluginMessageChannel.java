@@ -13,13 +13,13 @@ public class PluginMessageChannel implements Listener {
         this.plugin = plugin;
     }
 
-    @Override
-    public void onPluginMessageReceived(String channel, Player player, byte[] message) {
-        if (!channel.equals("BungeeCord")) return;
-
-        ByteArrayDataInput input = ByteStreams.newDataInput(message);
-        String subchannel = input.readUTF();
-    }
+//    @Override
+//    public void onPluginMessageReceived(String channel, Player player, byte[] message) {
+//        if (!channel.equals("BungeeCord")) return;
+//
+//        ByteArrayDataInput input = ByteStreams.newDataInput(message);
+//        String subchannel = input.readUTF();
+//    }
 
     // Server Connection Function
     public static void connect(Player player, String server) {
