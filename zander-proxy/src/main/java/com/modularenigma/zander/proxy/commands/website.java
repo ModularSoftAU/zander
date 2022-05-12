@@ -1,6 +1,10 @@
 package com.modularenigma.zander.proxy.commands;
 
+import com.jayway.jsonpath.JsonPath;
+import com.modularenigma.zander.proxy.ConfigurationManager;
 import com.modularenigma.zander.proxy.ZanderProxyMain;
+import io.github.ModularEnigma.Request;
+import io.github.ModularEnigma.Response;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -21,10 +25,18 @@ public class website extends Command {
         if (commandSender instanceof ProxiedPlayer) {
             ProxiedPlayer player = (ProxiedPlayer) commandSender;
 
-            // GET request to link to vote.
+            // GET request to link to website.
+            Request req = Request.builder()
+                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration")
+                    .setMethod(Request.Method.GET)
+                    .build();
 
-            TextComponent message = new TextComponent("For all information regarding the Network, visit our website: " + ChatColor.GOLD);
-            message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "website"));
+            Response res = req.execute();
+            String json = res.getBody().toJSONString();
+            String siteAddress = JsonPath.read(json, "$.data.siteAddress");
+
+            TextComponent message = new TextComponent("For all information regarding the Network, visit our website: " + ChatColor.GOLD + siteAddress);
+            message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, siteAddress));
             player.sendMessage(message);
             return;
         }

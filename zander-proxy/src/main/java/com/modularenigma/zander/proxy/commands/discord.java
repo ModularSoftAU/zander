@@ -1,6 +1,10 @@
 package com.modularenigma.zander.proxy.commands;
 
+import com.jayway.jsonpath.JsonPath;
+import com.modularenigma.zander.proxy.ConfigurationManager;
 import com.modularenigma.zander.proxy.ZanderProxyMain;
+import io.github.ModularEnigma.Request;
+import io.github.ModularEnigma.Response;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -22,9 +26,17 @@ public class discord extends Command {
             ProxiedPlayer player = (ProxiedPlayer) commandSender;
 
             // GET request to link to discord.
+            Request req = Request.builder()
+                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration")
+                    .setMethod(Request.Method.GET)
+                    .build();
 
-            TextComponent message = new TextComponent("Get to know the community and join our Discord here: " + ChatColor.BLUE + "discord");
-            message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "discord"));
+            Response res = req.execute();
+            String json = res.getBody().toJSONString();
+            String siteAddress = JsonPath.read(json, "$.data.siteAddress");
+
+            TextComponent message = new TextComponent("Get to know the community and join our Discord here: " + ChatColor.BLUE + siteAddress + "/discord");
+            message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, siteAddress + "/discord"));
             player.sendMessage(message);
             return;
         }

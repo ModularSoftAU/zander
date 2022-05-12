@@ -1,14 +1,18 @@
 package com.modularenigma.zander.proxy.commands;
 
+import com.jayway.jsonpath.JsonPath;
 import com.modularenigma.zander.proxy.ConfigurationManager;
 import com.modularenigma.zander.proxy.ZanderProxyMain;
 import io.github.ModularEnigma.Request;
 import io.github.ModularEnigma.Response;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
+
+import java.util.List;
 
 public class rules extends Command {
 
@@ -30,10 +34,11 @@ public class rules extends Command {
                 .build();
 
             Response res = req.execute();
-            plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + res.getStatusCode() + "): " + res.getBody().get("data.siteAddress") ));
+            String json = res.getBody().toJSONString();
+            String siteAddress = JsonPath.read(json, "$.data.siteAddress");
 
-            TextComponent message = new TextComponent("Please read and abide by the " + " rules which you can find on our website here: " + "rules");
-            message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "rules"));
+            TextComponent message = new TextComponent("Please read and abide by the rules which you can find on our website here: " + ChatColor.RED + siteAddress + "/rules");
+            message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, siteAddress + "/rules"));
             player.sendMessage(message);
             return;
         }

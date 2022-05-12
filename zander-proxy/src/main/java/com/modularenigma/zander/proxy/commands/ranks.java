@@ -1,6 +1,10 @@
 package com.modularenigma.zander.proxy.commands;
 
+import com.jayway.jsonpath.JsonPath;
+import com.modularenigma.zander.proxy.ConfigurationManager;
 import com.modularenigma.zander.proxy.ZanderProxyMain;
+import io.github.ModularEnigma.Request;
+import io.github.ModularEnigma.Response;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -22,9 +26,17 @@ public class ranks extends Command {
             ProxiedPlayer player = (ProxiedPlayer) commandSender;
 
             // GET request to link to ranks.
+            Request req = Request.builder()
+                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration")
+                    .setMethod(Request.Method.GET)
+                    .build();
 
-            TextComponent message = new TextComponent("Look at rank perks and purchase ranks at " + ChatColor.BLUE + "ranks" + ChatColor.RESET);
-            message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "ranks"));
+            Response res = req.execute();
+            String json = res.getBody().toJSONString();
+            String siteAddress = JsonPath.read(json, "$.data.siteAddress");
+
+            TextComponent message = new TextComponent("Look at rank perks and purchase ranks at " + ChatColor.BLUE + siteAddress + "/ranks");
+            message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, siteAddress + "/ranks"));
             player.sendMessage(message);
             return;
         }
