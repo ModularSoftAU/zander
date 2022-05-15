@@ -4,4 +4,4 @@ version: ${project.version}
 author: ModularEnigma
 api-version: 1.18
 softdepend:
-  - NuVotifier
+  - Votifier
