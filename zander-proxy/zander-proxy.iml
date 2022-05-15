@@ -12,19 +12,18 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: io.github.waterfallmc:waterfall-api:1.18-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: io.github.waterfallmc:waterfall-chat:1.18-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.code.gson:gson:2.8.8" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: io.github.waterfallmc:waterfall-config:1.18-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: io.github.waterfallmc:waterfall-event:1.18-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: io.github.waterfallmc:waterfall-protocol:1.18-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.md-5:brigadier:1.0.16-SNAPSHOT" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: io.netty:netty-codec:4.1.72.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-codec:4.1.72.Final" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.sf.trove4j:core:3.1.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: se.llbit:jo-nbt:1.3.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: io.netty:netty-transport-native-unix-common:4.1.72.Final" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: io.netty:netty-common:4.1.72.Final" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: io.netty:netty-buffer:4.1.72.Final" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: io.netty:netty-transport:4.1.72.Final" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: io.netty:netty-resolver:4.1.72.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-transport-native-unix-common:4.1.72.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-common:4.1.72.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-buffer:4.1.72.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-transport:4.1.72.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-resolver:4.1.72.Final" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.yaml:snakeyaml:1.30" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.guava:guava:31.0.1-jre" level="project" />
@@ -43,5 +42,14 @@
     <orderEntry type="library" name="Maven: net.minidev:json-smart:2.4.7" level="project" />
     <orderEntry type="library" name="Maven: net.minidev:accessors-smart:2.4.7" level="project" />
     <orderEntry type="library" name="Maven: org.ow2.asm:asm:9.1" level="project" />
+    <orderEntry type="library" name="Maven: com.github.NuVotifier:NuVotifier:2.7.2" level="project" />
+    <orderEntry type="library" name="Maven: com.github.NuVotifier.NuVotifier:nuvotifier-api:2.7.2" level="project" />
+    <orderEntry type="library" name="Maven: com.github.NuVotifier.NuVotifier:nuvotifier-bukkit:2.7.2" level="project" />
+    <orderEntry type="library" name="Maven: com.github.NuVotifier.NuVotifier:nuvotifier-bungeecord:2.7.2" level="project" />
+    <orderEntry type="library" name="Maven: com.github.NuVotifier.NuVotifier:nuvotifier-common:2.7.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-handler:4.1.49.Final" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.netty:netty-transport-native-epoll:linux-x86_64:4.1.49.Final" level="project" />
+    <orderEntry type="library" name="Maven: com.github.NuVotifier.NuVotifier:nuvotifier-sponge:2.7.2" level="project" />
+    <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.9" level="project" />
   </component>
 </module>
