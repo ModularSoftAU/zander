@@ -1,10 +1,7 @@
 package com.modularenigma.zander.proxy;
 
 import com.modularenigma.zander.proxy.commands.*;
-import com.modularenigma.zander.proxy.events.UserChatEvent;
-import com.modularenigma.zander.proxy.events.UserOnDisconnect;
-import com.modularenigma.zander.proxy.events.UserOnLogin;
-import com.modularenigma.zander.proxy.events.UserOnSwitch;
+import com.modularenigma.zander.proxy.events.*;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -29,7 +26,7 @@ public class ZanderProxyMain extends Plugin implements Listener {
             getProxy().getPluginManager().registerCommand(this, new discord());
             getProxy().getPluginManager().registerCommand(this, new guides());
             getProxy().getPluginManager().registerCommand(this, new ranks());
-//            getProxy().getPluginManager().registerCommand(this, new vote());
+            getProxy().getPluginManager().registerCommand(this, new vote());
             getProxy().getPluginManager().registerCommand(this, new website());
 
         // Event Registry
@@ -37,6 +34,7 @@ public class ZanderProxyMain extends Plugin implements Listener {
             getProxy().getPluginManager().registerListener(this, new UserOnLogin());
             getProxy().getPluginManager().registerListener(this, new UserOnDisconnect());
             getProxy().getPluginManager().registerListener(this, new UserOnSwitch());
+            getProxy().getPluginManager().registerListener(this, new UserOnVote());
 
     }
 
