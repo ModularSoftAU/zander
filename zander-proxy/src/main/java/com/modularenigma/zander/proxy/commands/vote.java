@@ -34,8 +34,11 @@ public class vote extends Command {
             Response topVoterRes = topVoterReq.execute();
             String topVoterResJSON = topVoterRes.getBody().toJSONString();
 
-            String voteUsername = JsonPath.read(topVoterResJSON, "$.data[0].username");
-            String voteCount = JsonPath.read(topVoterResJSON, "$.data[0].votes");
+            plugin.getProxy().getConsole().sendMessage(topVoterRes.getBody().toJSONString());
+
+            String voteUsername = JsonPath.read(topVoterResJSON, "$.data[0].['username']");
+            Integer voteCount = JsonPath.read(topVoterResJSON, "$.data[0].['votes']");
+
 
             // GET the plugin prefix from configuration
             Request configReq = Request.builder()
@@ -49,7 +52,7 @@ public class vote extends Command {
             String siteAddress = JsonPath.read(configResJSON, "$.data.siteAddress");
             String siteName = JsonPath.read(configResJSON, "$.data.siteName");
 
-            TextComponent message = new TextComponent(ChatColor.AQUA + "Help out " + siteName + " by voting on Minecraft Server lists! Check it out by " + ChatColor.BLUE + "clicking me!\nThe current Top Voter is " + voteUsername + " with " + voteCount + "votes.");
+            TextComponent message = new TextComponent(ChatColor.AQUA + "Help out " + siteName + " by voting on Minecraft Server lists! Check it out by " + ChatColor.BLUE + "clicking me!\nThe current Top Voter is " + voteUsername + " with " + voteCount + " votes.\n" + ChatColor.YELLOW + "Vote now to try and overtake them!");
             message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, siteAddress + "/vote"));
             player.sendMessage(message);
             return;
