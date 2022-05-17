@@ -28,6 +28,10 @@
       <id>maven2</id>
       <url>https://repo.maven.apache.org/maven2</url>
     </repository>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -35,6 +39,13 @@
       <artifactId>waterfall-api</artifactId>
       <version>1.18-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.vexsoftware</groupId>
+      <artifactId>nuvotifier-universal</artifactId>
+      <version>2.7.3</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/resources/nuvotifier.jar</systemPath>
     </dependency>
   </dependencies>
 </project>
