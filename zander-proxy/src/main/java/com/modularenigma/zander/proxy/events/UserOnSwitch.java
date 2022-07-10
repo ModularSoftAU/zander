@@ -19,40 +19,49 @@ public class UserOnSwitch implements Listener {
     public void UserSwitchEvent (ServerSwitchEvent event) {
         ProxiedPlayer player = event.getPlayer();
 
-        //
-        // Switch Session API POST
-        //
-        SessionSwitch switchSession = SessionSwitch.builder()
-                .uuid(player.getUniqueId())
-                .server(event.getFrom().getName())
-                .build();
+        try {
+            //
+            // Switch Session API POST
+            //
+            SessionSwitch switchSession = SessionSwitch.builder()
+                    .uuid(player.getUniqueId())
+                    .server(event.getFrom().getName())
+                    .build();
 
-        Request switchSessionReq = Request.builder()
-                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/session/switch")
-                .setMethod(Request.Method.POST)
-                .setRequestBody(switchSession.toString())
-                .build();
+            Request switchSessionReq = Request.builder()
+                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/session/switch")
+                    .setMethod(Request.Method.POST)
+                    .setRequestBody(switchSession.toString())
+                    .build();
 
-        Response switchSessionRes = switchSessionReq.execute();
-        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + switchSessionRes.getStatusCode() + "): " + switchSessionRes.getBody().toJSONString()));
+            Response switchSessionRes = switchSessionReq.execute();
+            plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + switchSessionRes.getStatusCode() + "): " + switchSessionRes.getBody().toJSONString()));
+        } catch (Exception e) {
+            player.disconnect(new TextComponent("An error has occurred. Is the API down?"));
+            System.out.println(e);
+        }
 
-        //
-        // Server Switch event throws an error when user has not switched from anywhere.
-        //
-        DiscordSwitch discordSwitch = DiscordSwitch.builder()
-                .username(player.getDisplayName())
-                .server(event.getFrom().getName())
-                .build();
+        try {
+            //
+            // Server Switch event throws an error when user has not switched from anywhere.
+            //
+            DiscordSwitch discordSwitch = DiscordSwitch.builder()
+                    .username(player.getDisplayName())
+                    .server(event.getFrom().getName())
+                    .build();
 
-        Request req = Request.builder()
-                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/discord/switch")
-                .setMethod(Request.Method.POST)
-                .setRequestBody(discordSwitch.toString())
-                .build();
+            Request req = Request.builder()
+                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/discord/switch")
+                    .setMethod(Request.Method.POST)
+                    .setRequestBody(discordSwitch.toString())
+                    .build();
 
-        Response res = req.execute();
-        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + res.getStatusCode() + "): " + res.getBody().toJSONString()));
-
+            Response res = req.execute();
+            plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + res.getStatusCode() + "): " + res.getBody().toJSONString()));
+        } catch (Exception e) {
+            player.disconnect(new TextComponent("An error has occurred. Is the API down?"));
+            System.out.println(e);
+        }
     }
 
 }

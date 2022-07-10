@@ -20,55 +20,64 @@ public class UserOnLogin implements Listener {
     public void UserLoginEvent (PostLoginEvent event) {
         ProxiedPlayer player = event.getPlayer();
 
-        //
-        // Send User Creation API POST for new user
-        //
-        UserCreation createUser = UserCreation.builder()
-                .uuid(player.getUniqueId())
-                .username(player.getDisplayName())
-                .build();
+        try {
+            //
+            // Send User Creation API POST for new user
+            //
+            UserCreation createUser = UserCreation.builder()
+                    .uuid(player.getUniqueId())
+                    .username(player.getDisplayName())
+                    .build();
 
-        Request createUserReq = Request.builder()
-                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/user/new")
-                .setMethod(Request.Method.POST)
-                .setRequestBody(createUser.toString())
-                .build();
+            Request createUserReq = Request.builder()
+                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/user/new")
+                    .setMethod(Request.Method.POST)
+                    .setRequestBody(createUser.toString())
+                    .build();
 
-        Response createUserRes = createUserReq.execute();
-        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + createUserRes.getStatusCode() + "): " + createUserRes.getBody().toJSONString()));
+            Response createUserRes = createUserReq.execute();
+            plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + createUserRes.getStatusCode() + "): " + createUserRes.getBody().toJSONString()));
+        } catch (Exception e) {
+            player.disconnect(new TextComponent("An error has occurred. Is the API down?"));
+            System.out.println(e);
+        }
 
-        //
-        // Start Session API POST
-        //
-        SessionCreate createSession = SessionCreate.builder()
-                .uuid(player.getUniqueId())
-                .ipAddress(player.getAddress().toString())
-                .server(event.getPlayer().getServer().getInfo().getName())
-                .build();
+        try {
+            //
+            // Start Session API POST
+            //
+            SessionCreate createSession = SessionCreate.builder()
+                    .uuid(player.getUniqueId())
+                    .ipAddress(player.getAddress().toString())
+                    .server(event.getPlayer().getServer().getInfo().getName())
+                    .build();
 
-        Request createSessionReq = Request.builder()
-                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/session/create")
-                .setMethod(Request.Method.POST)
-                .setRequestBody(createSession.toString())
-                .build();
+            Request createSessionReq = Request.builder()
+                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/session/create")
+                    .setMethod(Request.Method.POST)
+                    .setRequestBody(createSession.toString())
+                    .build();
 
-        Response createSessionRes = createSessionReq.execute();
-        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + createSessionRes.getStatusCode() + "): " + createSessionRes.getBody().toJSONString()));
+            Response createSessionRes = createSessionReq.execute();
+            plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + createSessionRes.getStatusCode() + "): " + createSessionRes.getBody().toJSONString()));
 
-        // Send Discord API POST for join message
-        DiscordJoin join = DiscordJoin.builder()
-                .username(player.getDisplayName())
-                .build();
+            // Send Discord API POST for join message
+            DiscordJoin join = DiscordJoin.builder()
+                    .username(player.getDisplayName())
+                    .build();
 
-        Request discordJoinReq = Request.builder()
-                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/discord/join")
-                .setMethod(Request.Method.POST)
-                .setRequestBody(join.toString())
-                .build();
+            Request discordJoinReq = Request.builder()
+                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/discord/join")
+                    .setMethod(Request.Method.POST)
+                    .setRequestBody(join.toString())
+                    .build();
 
-        Response discordJoinRes = discordJoinReq.execute();
-        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + discordJoinRes.getStatusCode() + "): " + discordJoinRes.getBody().toJSONString()));
-
+            Response discordJoinRes = discordJoinReq.execute();
+            plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + discordJoinRes.getStatusCode() + "): " + discordJoinRes.getBody().toJSONString()));
+        } catch (Exception e) {
+            player.disconnect(new TextComponent("An error has occurred. Is the API down?"));
+            System.out.println(e);
+        }
     }
 
 }
