@@ -29,11 +29,12 @@ public class UserChatEvent implements Listener {
         Request req = Request.builder()
                 .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/discord/chat")
                 .setMethod(Request.Method.POST)
+                .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
                 .setRequestBody(chat.toString())
                 .build();
 
         Response res = req.execute();
-        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + res.getStatusCode() + "): " + res.getBody().toJSONString()));
+        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + res.getStatusCode() + "): " + res.getBody()));
 
     }
 

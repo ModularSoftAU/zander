@@ -32,7 +32,7 @@ public class guides extends Command {
                     .build();
 
             Response res = req.execute();
-            String json = res.getBody().toJSONString();
+            String json = res.getBody();
             String siteAddress = JsonPath.read(json, "$.data.siteAddress");
 
             TextComponent message = new TextComponent("Little stuck? Need some help? Our guides site and resources may be of assistance to you. Check it out here: " + ChatColor.GOLD + siteAddress + "/knowledgebase");

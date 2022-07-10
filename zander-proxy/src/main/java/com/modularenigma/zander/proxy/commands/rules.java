@@ -31,10 +31,11 @@ public class rules extends Command {
             Request req = Request.builder()
                 .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration")
                 .setMethod(Request.Method.GET)
+                .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
                 .build();
 
             Response res = req.execute();
-            String json = res.getBody().toJSONString();
+            String json = res.getBody();
             String siteAddress = JsonPath.read(json, "$.data.siteAddress");
 
             TextComponent message = new TextComponent("Please read and abide by the rules which you can find on our website here: " + ChatColor.RED + siteAddress + "/rules");

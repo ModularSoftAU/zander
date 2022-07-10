@@ -29,12 +29,13 @@ public class vote extends Command {
             Request topVoterReq = Request.builder()
                     .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/vote/get")
                     .setMethod(Request.Method.GET)
+                    .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
                     .build();
 
             Response topVoterRes = topVoterReq.execute();
-            String topVoterResJSON = topVoterRes.getBody().toJSONString();
+            String topVoterResJSON = topVoterRes.getBody();
 
-            plugin.getProxy().getConsole().sendMessage(topVoterRes.getBody().toJSONString());
+            plugin.getProxy().getConsole().sendMessage(topVoterRes.getBody());
 
             String voteUsername = JsonPath.read(topVoterResJSON, "$.data[0].['username']");
             Integer voteCount = JsonPath.read(topVoterResJSON, "$.data[0].['votes']");
@@ -44,10 +45,11 @@ public class vote extends Command {
             Request configReq = Request.builder()
                     .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration")
                     .setMethod(Request.Method.GET)
+                    .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
                     .build();
 
             Response configRes = configReq.execute();
-            String configResJSON = configRes.getBody().toJSONString();
+            String configResJSON = configRes.getBody();
 
             String siteAddress = JsonPath.read(configResJSON, "$.data.siteAddress");
             String siteName = JsonPath.read(configResJSON, "$.data.siteName");

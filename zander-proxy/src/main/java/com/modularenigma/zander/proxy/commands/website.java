@@ -29,10 +29,11 @@ public class website extends Command {
             Request req = Request.builder()
                     .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration")
                     .setMethod(Request.Method.GET)
+                    .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
                     .build();
 
             Response res = req.execute();
-            String json = res.getBody().toJSONString();
+            String json = res.getBody();
             String siteAddress = JsonPath.read(json, "$.data.siteAddress");
 
             TextComponent message = new TextComponent("For all information regarding the Network, visit our website: " + ChatColor.GOLD + siteAddress);

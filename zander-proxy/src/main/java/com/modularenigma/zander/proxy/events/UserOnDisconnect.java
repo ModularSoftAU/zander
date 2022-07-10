@@ -31,11 +31,12 @@ public class UserOnDisconnect implements Listener {
         Request destroySessionReq = Request.builder()
                 .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/session/destroy")
                 .setMethod(Request.Method.POST)
+                .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
                 .setRequestBody(destroySession.toString())
                 .build();
 
         Response destroySessionRes = destroySessionReq.execute();
-        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + destroySessionRes.getStatusCode() + "): " + destroySessionRes.getBody().toJSONString()));
+        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + destroySessionRes.getStatusCode() + "): " + destroySessionRes.getBody()));
 
         //
         // Send Discord API POST for disconnect message
@@ -47,11 +48,12 @@ public class UserOnDisconnect implements Listener {
         Request discordLeaveReq = Request.builder()
                 .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/discord/leave")
                 .setMethod(Request.Method.POST)
+                .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
                 .setRequestBody(leave.toString())
                 .build();
 
         Response discordLeaveRes = discordLeaveReq.execute();
-        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + discordLeaveRes.getStatusCode() + "): " + discordLeaveRes.getBody().toJSONString()));
+        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + discordLeaveRes.getStatusCode() + "): " + discordLeaveRes.getBody()));
 
     }
 

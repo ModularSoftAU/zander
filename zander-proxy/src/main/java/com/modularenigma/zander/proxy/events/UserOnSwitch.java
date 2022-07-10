@@ -31,11 +31,12 @@ public class UserOnSwitch implements Listener {
             Request switchSessionReq = Request.builder()
                     .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/session/switch")
                     .setMethod(Request.Method.POST)
+                    .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
                     .setRequestBody(switchSession.toString())
                     .build();
 
             Response switchSessionRes = switchSessionReq.execute();
-            plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + switchSessionRes.getStatusCode() + "): " + switchSessionRes.getBody().toJSONString()));
+            plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + switchSessionRes.getStatusCode() + "): " + switchSessionRes.getBody()));
         } catch (Exception e) {
             player.disconnect(new TextComponent("An error has occurred. Is the API down?"));
             System.out.println(e);
@@ -53,11 +54,12 @@ public class UserOnSwitch implements Listener {
             Request req = Request.builder()
                     .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/discord/switch")
                     .setMethod(Request.Method.POST)
+                    .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
                     .setRequestBody(discordSwitch.toString())
                     .build();
 
             Response res = req.execute();
-            plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + res.getStatusCode() + "): " + res.getBody().toJSONString()));
+            plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + res.getStatusCode() + "): " + res.getBody()));
         } catch (Exception e) {
             player.disconnect(new TextComponent("An error has occurred. Is the API down?"));
             System.out.println(e);

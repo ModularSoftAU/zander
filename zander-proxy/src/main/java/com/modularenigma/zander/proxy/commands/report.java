@@ -66,11 +66,12 @@ public class report extends Command implements TabExecutor {
                 Request req = Request.builder()
                         .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/report/create")
                         .setMethod(Request.Method.POST)
+                        .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
                         .setRequestBody(report.toString())
                         .build();
 
                 Response res = req.execute();
-                plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + res.getStatusCode() + "): " + res.getBody().toJSONString()));
+                plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + res.getStatusCode() + "): " + res.getBody()));
 
             }
             return;

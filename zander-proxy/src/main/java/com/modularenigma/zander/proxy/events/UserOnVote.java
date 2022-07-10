@@ -31,20 +31,22 @@ public class UserOnVote implements Listener {
         Request voteCastReq = Request.builder()
                 .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/vote/cast")
                 .setMethod(Request.Method.POST)
+                .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
                 .setRequestBody(cast.toString())
                 .build();
 
         Response voteCastRes = voteCastReq.execute();
-        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + voteCastRes.getStatusCode() + "): " + voteCastRes.getBody().toJSONString()));
+        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + voteCastRes.getStatusCode() + "): " + voteCastRes.getBody()));
 
         // GET the plugin prefix from configuration
         Request configReq = Request.builder()
                 .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration")
                 .setMethod(Request.Method.GET)
+                .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
                 .build();
 
         Response configRes = configReq.execute();
-        String configResJSON = configRes.getBody().toJSONString();
+        String configResJSON = configRes.getBody();
 
         String prefix = JsonPath.read(configResJSON, "$.data.server.prefix");
         String siteAddress = JsonPath.read(configResJSON, "$.data.siteAddress");
