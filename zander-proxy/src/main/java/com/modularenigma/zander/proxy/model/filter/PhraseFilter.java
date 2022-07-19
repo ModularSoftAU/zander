@@ -1,16 +1,13 @@
-package com.modularenigma.zander.proxy.model.session;
+package com.modularenigma.zander.proxy.model.filter;
 
 import com.google.gson.Gson;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.UUID;
-
 @Builder
-public class SessionCreate {
+public class PhraseFilter {
 
-    @Getter UUID uuid;
-    @Getter String ipAddress;
+    @Getter String content;
 
     @Override
     public String toString() {

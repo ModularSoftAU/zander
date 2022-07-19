@@ -1,11 +1,19 @@
 package com.modularenigma.zander.proxy;
 
+import com.jayway.jsonpath.JsonPath;
 import com.modularenigma.zander.proxy.commands.*;
 import com.modularenigma.zander.proxy.events.*;
+import io.github.ModularEnigma.Request;
+import io.github.ModularEnigma.Response;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
+
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class ZanderProxyMain extends Plugin implements Listener {
     private static ZanderProxyMain plugin;
@@ -35,6 +43,30 @@ public class ZanderProxyMain extends Plugin implements Listener {
             getProxy().getPluginManager().registerListener(this, new UserOnDisconnect());
             getProxy().getPluginManager().registerListener(this, new UserOnSwitch());
             getProxy().getPluginManager().registerListener(this, new UserOnVote());
+            getProxy().getPluginManager().registerListener(this, new UserOnProxyPing());
+
+        ProxyServer.getInstance().getScheduler().schedule(plugin, new Runnable() {
+            @Override
+            public void run() {
+                Random random = new Random();
+
+                // GET request to fetch tip.
+                Request tipReq = Request.builder()
+                        .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/announcement/get?announcementType=tip")
+                        .setMethod(Request.Method.GET)
+                        .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
+                        .build();
+
+                Response tipRes = tipReq.execute();
+                String tipJson = tipRes.getBody();
+                String link = JsonPath.read(tipJson, "$.data[0].link");
+                String colourMessageFormat = JsonPath.read(tipJson, "$.data[0].colourMessageFormat");
+
+                TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', "&8[&eTIP&8] " + colourMessageFormat));
+                message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, link));
+                ProxyServer.getInstance().broadcast(message);
+            }
+        }, 2, 1, TimeUnit.MINUTES);
 
     }
 

@@ -4,13 +4,15 @@ import com.modularenigma.zander.proxy.ConfigurationManager;
 import com.modularenigma.zander.proxy.ZanderProxyMain;
 import com.modularenigma.zander.proxy.model.discord.DiscordSwitch;
 import com.modularenigma.zander.proxy.model.session.SessionSwitch;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
 import io.github.ModularEnigma.Request;
 import io.github.ModularEnigma.Response;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ServerSwitchEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+
+import java.util.UUID;
 
 public class UserOnSwitch implements Listener {
     private ZanderProxyMain plugin = ZanderProxyMain.getInstance();
@@ -18,14 +20,17 @@ public class UserOnSwitch implements Listener {
     @EventHandler
     public void UserSwitchEvent (ServerSwitchEvent event) {
         ProxiedPlayer player = event.getPlayer();
+        String username = player.getDisplayName();
+        UUID playerUUID = player.getUniqueId();
+        String server = event.getFrom().getName();
 
         try {
             //
             // Switch Session API POST
             //
             SessionSwitch switchSession = SessionSwitch.builder()
-                    .uuid(player.getUniqueId())
-                    .server(event.getFrom().getName())
+                    .uuid(playerUUID)
+                    .server(server)
                     .build();
 
             Request switchSessionReq = Request.builder()
@@ -47,8 +52,8 @@ public class UserOnSwitch implements Listener {
             // Server Switch event throws an error when user has not switched from anywhere.
             //
             DiscordSwitch discordSwitch = DiscordSwitch.builder()
-                    .username(player.getDisplayName())
-                    .server(event.getFrom().getName())
+                    .username(username)
+                    .server(server)
                     .build();
 
             Request req = Request.builder()
