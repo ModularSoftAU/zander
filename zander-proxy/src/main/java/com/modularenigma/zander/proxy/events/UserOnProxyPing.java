@@ -27,7 +27,7 @@ public class UserOnProxyPing implements Listener {
 
         // GET request to fetch MOTD.
         Request req = Request.builder()
-                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/announcement/get?announcementType=motd")
+                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/announcements/get?announcementType=motd")
                 .setMethod(Request.Method.GET)
                 .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
                 .build();
