@@ -27,21 +27,26 @@ public class rules extends Command {
         if (commandSender instanceof ProxiedPlayer) {
             ProxiedPlayer player = (ProxiedPlayer) commandSender;
 
-            // GET request to link to rules.
-            Request req = Request.builder()
-                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration")
-                .setMethod(Request.Method.GET)
-                .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
-                .build();
+            try {
+                // GET request to link to rules.
+                Request req = Request.builder()
+                        .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration")
+                        .setMethod(Request.Method.GET)
+                        .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
+                        .build();
 
-            Response res = req.execute();
-            String json = res.getBody();
-            String siteAddress = JsonPath.read(json, "$.data.siteAddress");
+                Response res = req.execute();
+                String json = res.getBody();
+                String siteAddress = JsonPath.read(json, "$.data.siteAddress");
 
-            TextComponent message = new TextComponent("Please read and abide by the rules which you can find on our website here: " + ChatColor.RED + siteAddress + "/rules");
-            message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, siteAddress + "/rules"));
-            player.sendMessage(message);
-            return;
+                TextComponent message = new TextComponent("Please read and abide by the rules which you can find on our website here: " + ChatColor.RED + siteAddress + "/rules");
+                message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, siteAddress + "/rules"));
+                player.sendMessage(message);
+                return;
+            } catch (Exception e) {
+                player.sendMessage(new TextComponent("An error has occurred. Is the API down?"));
+                System.out.println(e);
+            }
         }
     }
 

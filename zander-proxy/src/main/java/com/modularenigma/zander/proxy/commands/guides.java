@@ -25,20 +25,25 @@ public class guides extends Command {
         if (commandSender instanceof ProxiedPlayer) {
             ProxiedPlayer player = (ProxiedPlayer) commandSender;
 
-            // GET request to link to guides/knowledgebase.
-            Request req = Request.builder()
-                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration")
-                    .setMethod(Request.Method.GET)
-                    .build();
+            try {
+                // GET request to link to guides/knowledgebase.
+                Request req = Request.builder()
+                        .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration")
+                        .setMethod(Request.Method.GET)
+                        .build();
 
-            Response res = req.execute();
-            String json = res.getBody();
-            String siteAddress = JsonPath.read(json, "$.data.siteAddress");
+                Response res = req.execute();
+                String json = res.getBody();
+                String siteAddress = JsonPath.read(json, "$.data.siteAddress");
 
-            TextComponent message = new TextComponent("Little stuck? Need some help? Our guides site and resources may be of assistance to you. Check it out here: " + ChatColor.GOLD + siteAddress + "/knowledgebase");
-            message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, siteAddress + "/knowledgebase"));
-            player.sendMessage(message);
-            return;
+                TextComponent message = new TextComponent("Little stuck? Need some help? Our guides site and resources may be of assistance to you. Check it out here: " + ChatColor.GOLD + siteAddress + "/knowledgebase");
+                message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, siteAddress + "/knowledgebase"));
+                player.sendMessage(message);
+                return;
+            } catch (Exception e) {
+                player.sendMessage(new TextComponent("An error has occurred. Is the API down?"));
+                System.out.println(e);
+            }
         }
     }
 

@@ -52,7 +52,7 @@ public class ZanderProxyMain extends Plugin implements Listener {
 
                 // GET request to fetch tip.
                 Request tipReq = Request.builder()
-                        .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/announcements/get?announcementType=tip")
+                        .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/announcement/get?announcementType=tip")
                         .setMethod(Request.Method.GET)
                         .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
                         .build();

@@ -29,52 +29,58 @@ public class report extends Command implements TabExecutor {
         if (commandSender instanceof ProxiedPlayer) {
             ProxiedPlayer player = (ProxiedPlayer) commandSender;
 
-            if (strings.length == 0) {
-                player.sendMessage(new TextComponent(ChatColor.RED + "Please specify a player to report and the reason for it."));
-                return;
-            } else if (strings.length == 1) {
-                player.sendMessage(new TextComponent(ChatColor.RED + "Please specify a reason for this report."));
-                return;
-            } else {
-                ProxiedPlayer target = ProxyServer.getInstance().getPlayer(strings[0]);
-                String targetsServer = target.getServer().getInfo().getName();
-                String targetServerName = targetsServer.substring(0,1).toUpperCase() + targetsServer.substring(1).toLowerCase();
+            try {
+                if (strings.length == 0) {
+                    player.sendMessage(new TextComponent(ChatColor.RED + "Please specify a player to report and the reason for it."));
+                    return;
+                } else if (strings.length == 1) {
+                    player.sendMessage(new TextComponent(ChatColor.RED + "Please specify a reason for this report."));
+                    return;
+                } else {
+                    ProxiedPlayer target = ProxyServer.getInstance().getPlayer(strings[0]);
+                    String targetsServer = target.getServer().getInfo().getName();
+                    String targetServerName = targetsServer.substring(0,1).toUpperCase() + targetsServer.substring(1).toLowerCase();
 
-                player.sendMessage(new TextComponent(ChatColor.GREEN + "Your report has been sent to the Server Staff."));
+                    player.sendMessage(new TextComponent(ChatColor.GREEN + "Your report has been sent to the Server Staff."));
 
-                StringBuilder str = new StringBuilder();
-                for (int i = 1; i < strings.length; i++) {
-                    str.append(strings[i] + " ");
-                }
-                String reportReason = str.toString().trim();
-
-                // For all people that have zander.report.notify, send them the report.
-                for (ProxiedPlayer pspp : ProxyServer.getInstance().getPlayers()) {
-                    if (pspp.hasPermission("zander.report.notify")) {
-                        pspp.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', ChatColor.GOLD + "============================================\n" + ChatColor.YELLOW + ChatColor.BOLD + "INCOMING REPORT\n" + player.getName() + " reported " + target.getDisplayName() + " on " + targetServerName + "\n" + ChatColor.GRAY + str.toString().trim() + "\n" + ChatColor.GOLD + "============================================")));
+                    StringBuilder str = new StringBuilder();
+                    for (int i = 1; i < strings.length; i++) {
+                        str.append(strings[i] + " ");
                     }
+                    String reportReason = str.toString().trim();
+
+                    // For all people that have zander.report.notify, send them the report.
+                    for (ProxiedPlayer pspp : ProxyServer.getInstance().getPlayers()) {
+                        if (pspp.hasPermission("zander.report.notify")) {
+                            pspp.sendMessage(new TextComponent(ChatColor.translateAlternateColorCodes('&', ChatColor.GOLD + "============================================\n" + ChatColor.YELLOW + ChatColor.BOLD + "INCOMING REPORT\n" + player.getName() + " reported " + target.getDisplayName() + " on " + targetServerName + "\n" + ChatColor.GRAY + str.toString().trim() + "\n" + ChatColor.GOLD + "============================================")));
+                        }
+                    }
+
+                    ReportCreate report = ReportCreate.builder()
+                            .reportedUser(target.getDisplayName())
+                            .reporterUser(player.getDisplayName())
+                            .reason(reportReason)
+                            .platform("SERVER")
+                            .server(targetServerName)
+                            .build();
+
+                    Request req = Request.builder()
+                            .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/report/create")
+                            .setMethod(Request.Method.POST)
+                            .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
+                            .setRequestBody(report.toString())
+                            .build();
+
+                    Response res = req.execute();
+                    plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + res.getStatusCode() + "): " + res.getBody()));
+
                 }
-
-                ReportCreate report = ReportCreate.builder()
-                        .reportedUser(target.getDisplayName())
-                        .reporterUser(player.getDisplayName())
-                        .reason(reportReason)
-                        .platform("SERVER")
-                        .server(targetServerName)
-                        .build();
-
-                Request req = Request.builder()
-                        .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/report/create")
-                        .setMethod(Request.Method.POST)
-                        .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
-                        .setRequestBody(report.toString())
-                        .build();
-
-                Response res = req.execute();
-                plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + res.getStatusCode() + "): " + res.getBody()));
-
+                return;
+            } catch (Exception e) {
+                player.sendMessage(new TextComponent("An error has occurred. Is the API down?"));
+                System.out.println(e);
             }
-            return;
+
         }
     }
 

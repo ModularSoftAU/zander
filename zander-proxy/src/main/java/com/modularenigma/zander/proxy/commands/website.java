@@ -25,21 +25,26 @@ public class website extends Command {
         if (commandSender instanceof ProxiedPlayer) {
             ProxiedPlayer player = (ProxiedPlayer) commandSender;
 
-            // GET request to link to website.
-            Request req = Request.builder()
-                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration")
-                    .setMethod(Request.Method.GET)
-                    .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
-                    .build();
+            try {
+                // GET request to link to website.
+                Request req = Request.builder()
+                        .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration")
+                        .setMethod(Request.Method.GET)
+                        .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
+                        .build();
 
-            Response res = req.execute();
-            String json = res.getBody();
-            String siteAddress = JsonPath.read(json, "$.data.siteAddress");
+                Response res = req.execute();
+                String json = res.getBody();
+                String siteAddress = JsonPath.read(json, "$.data.siteAddress");
 
-            TextComponent message = new TextComponent("For all information regarding the Network, visit our website: " + ChatColor.GOLD + siteAddress);
-            message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, siteAddress));
-            player.sendMessage(message);
-            return;
+                TextComponent message = new TextComponent("For all information regarding the Network, visit our website: " + ChatColor.GOLD + siteAddress);
+                message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, siteAddress));
+                player.sendMessage(message);
+                return;
+            } catch (Exception e) {
+                player.sendMessage(new TextComponent("An error has occurred. Is the API down?"));
+                System.out.println(e);
+            }
         }
     }
 

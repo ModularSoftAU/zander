@@ -22,37 +22,41 @@ public class UserOnVote implements Listener {
         String player = event.getVote().getUsername();
         String voteSite = event.getVote().getServiceName();
 
-        // POST to cast vote
-        VoteCast cast = VoteCast.builder()
-                .username(player)
-                .voteSite(voteSite)
-                .build();
+        try {
+            // POST to cast vote
+            VoteCast cast = VoteCast.builder()
+                    .username(player)
+                    .voteSite(voteSite)
+                    .build();
 
-        Request voteCastReq = Request.builder()
-                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/vote/cast")
-                .setMethod(Request.Method.POST)
-                .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
-                .setRequestBody(cast.toString())
-                .build();
+            Request voteCastReq = Request.builder()
+                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/vote/cast")
+                    .setMethod(Request.Method.POST)
+                    .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
+                    .setRequestBody(cast.toString())
+                    .build();
 
-        Response voteCastRes = voteCastReq.execute();
-        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + voteCastRes.getStatusCode() + "): " + voteCastRes.getBody()));
+            Response voteCastRes = voteCastReq.execute();
+            plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + voteCastRes.getStatusCode() + "): " + voteCastRes.getBody()));
 
-        // GET the plugin prefix from configuration
-        Request configReq = Request.builder()
-                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration")
-                .setMethod(Request.Method.GET)
-                .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
-                .build();
+            // GET the plugin prefix from configuration
+            Request configReq = Request.builder()
+                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration")
+                    .setMethod(Request.Method.GET)
+                    .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
+                    .build();
 
-        Response configRes = configReq.execute();
-        String configResJSON = configRes.getBody();
+            Response configRes = configReq.execute();
+            String configResJSON = configRes.getBody();
 
-        String prefix = JsonPath.read(configResJSON, "$.data.server.prefix");
-        String siteAddress = JsonPath.read(configResJSON, "$.data.siteAddress");
+            String prefix = JsonPath.read(configResJSON, "$.data.server.prefix");
+            String siteAddress = JsonPath.read(configResJSON, "$.data.siteAddress");
 
-        TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', prefix + " " + player + " voted from " + ChatColor.AQUA + voteSite + ChatColor.RESET + ". You can too using clicking me!"));
-        message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, siteAddress + "/vote"));
-        ProxyServer.getInstance().broadcast(message); // Broadcast to all Servers
+            TextComponent message = new TextComponent(ChatColor.translateAlternateColorCodes('&', prefix + " " + player + " voted from " + ChatColor.AQUA + voteSite + ChatColor.RESET + ". You can too using clicking me!"));
+            message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, siteAddress + "/vote"));
+            ProxyServer.getInstance().broadcast(message); // Broadcast to all Servers
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }

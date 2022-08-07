@@ -24,37 +24,49 @@ public class UserOnDisconnect implements Listener {
         //
         // Destory Session API POST
         //
-        SessionDestroy destroySession = SessionDestroy.builder()
-                .uuid(player.getUniqueId())
-                .build();
+        try {
+            SessionDestroy destroySession = SessionDestroy.builder()
+                    .uuid(player.getUniqueId())
+                    .build();
 
-        Request destroySessionReq = Request.builder()
-                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/session/destroy")
-                .setMethod(Request.Method.POST)
-                .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
-                .setRequestBody(destroySession.toString())
-                .build();
+            Request destroySessionReq = Request.builder()
+                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/session/destroy")
+                    .setMethod(Request.Method.POST)
+                    .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
+                    .setRequestBody(destroySession.toString())
+                    .build();
 
-        Response destroySessionRes = destroySessionReq.execute();
-        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + destroySessionRes.getStatusCode() + "): " + destroySessionRes.getBody()));
+            Response destroySessionRes = destroySessionReq.execute();
+            plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + destroySessionRes.getStatusCode() + "): " + destroySessionRes.getBody()));
+        } catch (Exception e) {
+            player.disconnect(new TextComponent("An error has occurred. Is the API down?"));
+            System.out.println(e);
+            return;
+        }
+
 
         //
         // Send Discord API POST for disconnect message
         //
-        DiscordLeave leave = DiscordLeave.builder()
-                .username(player.getDisplayName())
-                .build();
+        try {
+            DiscordLeave leave = DiscordLeave.builder()
+                    .username(player.getDisplayName())
+                    .build();
 
-        Request discordLeaveReq = Request.builder()
-                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/discord/leave")
-                .setMethod(Request.Method.POST)
-                .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
-                .setRequestBody(leave.toString())
-                .build();
+            Request discordLeaveReq = Request.builder()
+                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/discord/leave")
+                    .setMethod(Request.Method.POST)
+                    .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
+                    .setRequestBody(leave.toString())
+                    .build();
 
-        Response discordLeaveRes = discordLeaveReq.execute();
-        plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + discordLeaveRes.getStatusCode() + "): " + discordLeaveRes.getBody()));
-
+            Response discordLeaveRes = discordLeaveReq.execute();
+            plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + discordLeaveRes.getStatusCode() + "): " + discordLeaveRes.getBody()));
+        } catch (Exception e) {
+            player.disconnect(new TextComponent("An error has occurred. Is the API down?"));
+            System.out.println(e);
+            return;
+        }
     }
 
 }

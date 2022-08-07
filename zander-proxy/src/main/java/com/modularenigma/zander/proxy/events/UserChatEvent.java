@@ -21,12 +21,10 @@ public class UserChatEvent implements Listener {
     public void UserChatEvent(ChatEvent event) {
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
 
-        System.out.println(event.getMessage());
-
         // Check filter for blocked phrases
         try {
             PhraseFilter phrase = PhraseFilter.builder()
-                    .content(event.getMessage())
+                    .content(event.getMessage().toString())
                     .build();
 
             Request phraseReq = Request.builder()
@@ -40,10 +38,12 @@ public class UserChatEvent implements Listener {
             String phraseJson = phraseRes.getBody();
 
             System.out.println(phraseJson);
-            Boolean phraseCaught = JsonPath.read(phraseJson, "$.success");
-            String phraseCaughtMessage = JsonPath.read(phraseJson, "$.message");
+            System.out.println((String) JsonPath.read(phraseJson, "$.data[0].success"));
 
-            if (!phraseCaught) {
+            String phraseCaught = JsonPath.read(phraseJson, "$.data.success");
+            String phraseCaughtMessage = JsonPath.read(phraseJson, "$.data.message");
+
+            if (phraseCaught == "false") {
                 player.sendMessage(new TextComponent(ChatColor.RED + phraseCaughtMessage));
                 event.setCancelled(true);
                 return;

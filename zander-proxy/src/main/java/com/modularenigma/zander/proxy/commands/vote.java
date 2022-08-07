@@ -25,39 +25,44 @@ public class vote extends Command {
         if (commandSender instanceof ProxiedPlayer) {
             ProxiedPlayer player = (ProxiedPlayer) commandSender;
 
-            // GET the Top Voter and vote count
-            Request topVoterReq = Request.builder()
-                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/vote/get")
-                    .setMethod(Request.Method.GET)
-                    .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
-                    .build();
+            try {
+                // GET the Top Voter and vote count
+                Request topVoterReq = Request.builder()
+                        .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/vote/get")
+                        .setMethod(Request.Method.GET)
+                        .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
+                        .build();
 
-            Response topVoterRes = topVoterReq.execute();
-            String topVoterResJSON = topVoterRes.getBody();
+                Response topVoterRes = topVoterReq.execute();
+                String topVoterResJSON = topVoterRes.getBody();
 
-            plugin.getProxy().getConsole().sendMessage(topVoterRes.getBody());
+                plugin.getProxy().getConsole().sendMessage(topVoterRes.getBody());
 
-            String voteUsername = JsonPath.read(topVoterResJSON, "$.data[0].['username']");
-            Integer voteCount = JsonPath.read(topVoterResJSON, "$.data[0].['votes']");
+                String voteUsername = JsonPath.read(topVoterResJSON, "$.data[0].['username']");
+                Integer voteCount = JsonPath.read(topVoterResJSON, "$.data[0].['votes']");
 
 
-            // GET the plugin prefix from configuration
-            Request configReq = Request.builder()
-                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration")
-                    .setMethod(Request.Method.GET)
-                    .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
-                    .build();
+                // GET the plugin prefix from configuration
+                Request configReq = Request.builder()
+                        .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/web/configuration")
+                        .setMethod(Request.Method.GET)
+                        .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
+                        .build();
 
-            Response configRes = configReq.execute();
-            String configResJSON = configRes.getBody();
+                Response configRes = configReq.execute();
+                String configResJSON = configRes.getBody();
 
-            String siteAddress = JsonPath.read(configResJSON, "$.data.siteAddress");
-            String siteName = JsonPath.read(configResJSON, "$.data.siteName");
+                String siteAddress = JsonPath.read(configResJSON, "$.data.siteAddress");
+                String siteName = JsonPath.read(configResJSON, "$.data.siteName");
 
-            TextComponent message = new TextComponent(ChatColor.AQUA + "Help out " + siteName + " by voting on Minecraft Server lists! Check it out by " + ChatColor.BLUE + "clicking me!\nThe current Top Voter is " + voteUsername + " with " + voteCount + " votes.\n" + ChatColor.YELLOW + "Vote now to try and overtake them!");
-            message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, siteAddress + "/vote"));
-            player.sendMessage(message);
-            return;
+                TextComponent message = new TextComponent(ChatColor.AQUA + "Help out " + siteName + " by voting on Minecraft Server lists! Check it out by " + ChatColor.BLUE + "clicking me!\nThe current Top Voter is " + voteUsername + " with " + voteCount + " votes.\n" + ChatColor.YELLOW + "Vote now to try and overtake them!");
+                message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, siteAddress + "/vote"));
+                player.sendMessage(message);
+                return;
+            } catch (Exception e) {
+                player.sendMessage(new TextComponent("An error has occurred. Is the API down?"));
+                System.out.println(e);
+            }
         }
     }
 
