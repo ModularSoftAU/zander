@@ -48,7 +48,7 @@ public class UserOnLogin implements Listener {
                 //
                 SessionCreate createSession = SessionCreate.builder()
                         .uuid(player.getUniqueId())
-                        .ipAddress(player.getAddress().toString())
+                        .ipAddress(player.getAddress().getAddress().getHostAddress())
                         .build();
 
                 Request createSessionReq = Request.builder()
@@ -63,10 +63,6 @@ public class UserOnLogin implements Listener {
 
                 System.out.println(json);
 
-                Boolean createSessionSuccess = JsonPath.read(json, "$.success");
-                if (!createSessionSuccess) {
-                    player.disconnect(new TextComponent("There was an error in trying to create your session. Is the API down?"));
-                }
                 plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + createSessionRes.getStatusCode() + "): " + createSessionRes.getBody()));
 
                 // Send Discord API POST for join message

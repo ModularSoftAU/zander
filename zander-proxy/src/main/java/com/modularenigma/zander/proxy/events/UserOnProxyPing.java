@@ -34,6 +34,7 @@ public class UserOnProxyPing implements Listener {
 
         Response res = req.execute();
         String json = res.getBody();
+
         String colourMessageFormat = JsonPath.read(json, "$.data[0].colourMessageFormat");
 
         serverPing.setDescriptionComponent(new TextComponent(ChatColor.translateAlternateColorCodes('&', colourMessageFormat)));

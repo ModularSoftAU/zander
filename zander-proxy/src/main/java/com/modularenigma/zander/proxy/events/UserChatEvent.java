@@ -21,14 +21,14 @@ public class UserChatEvent implements Listener {
     public void UserChatEvent(ChatEvent event) {
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
 
-        // Check filter for blocked phrases
+        // Check chat for blocked content
         try {
             PhraseFilter phrase = PhraseFilter.builder()
                     .content(event.getMessage().toString())
                     .build();
 
             Request phraseReq = Request.builder()
-                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/filter/phrase")
+                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/filter")
                     .setMethod(Request.Method.POST)
                     .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
                     .setRequestBody(phrase.toString())
@@ -37,55 +37,21 @@ public class UserChatEvent implements Listener {
             Response phraseRes = phraseReq.execute();
             String phraseJson = phraseRes.getBody();
 
-            System.out.println(phraseJson);
-            System.out.println((String) JsonPath.read(phraseJson, "$.data[0].success"));
+//            String phraseCaught = JsonPath.read(phraseJson, "$.success");
+//            String phraseCaughtMessage = JsonPath.read(phraseJson, "$.message");
 
-            String phraseCaught = JsonPath.read(phraseJson, "$.data.success");
-            String phraseCaughtMessage = JsonPath.read(phraseJson, "$.data.message");
-
-            if (phraseCaught == "false") {
-                player.sendMessage(new TextComponent(ChatColor.RED + phraseCaughtMessage));
-                event.setCancelled(true);
-                return;
-            }
+//            if (phraseCaught == "false") {
+//                player.sendMessage(new TextComponent(ChatColor.RED + phraseCaughtMessage));
+//                event.setCancelled(true);
+//                return;
+//            }
 
             plugin.getProxy().getConsole().sendMessage(new TextComponent("[FILTER] Response (" + phraseRes.getStatusCode() + "): " + phraseRes.getBody()));
 
         } catch (Exception e) {
+            player.sendMessage(new TextComponent(ChatColor.YELLOW + "The chat filter could not be reached at this time, there maybe an issue with the API."));
             System.out.println(e);
         }
-
-        // Check filter for advertisement links
-        try {
-
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
-        // Send message to Discord to logs
-        if (event.getMessage().startsWith("/")) return;
-
-        try {
-            DiscordChat chat = DiscordChat.builder()
-                    .username(player.getDisplayName())
-                    .server(player.getServer().getInfo().getName())
-                    .content(event.getMessage())
-                    .build();
-
-            Request req = Request.builder()
-                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/discord/chat")
-                    .setMethod(Request.Method.POST)
-                    .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
-                    .setRequestBody(chat.toString())
-                    .build();
-
-            Response res = req.execute();
-            plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + res.getStatusCode() + "): " + res.getBody()));
-        } catch (Exception e){
-            System.out.println(e);
-            return;
-        }
-
     }
 
 }
