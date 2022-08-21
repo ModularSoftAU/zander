@@ -1,11 +1,11 @@
-package com.modularenigma.zander.proxy.model.filter;
+package com.modularenigma.zander.proxy.model;
 
 import com.google.gson.Gson;
 import lombok.Builder;
 import lombok.Getter;
 
 @Builder
-public class LinkFilter {
+public class Filter {
 
     @Getter String content;
 

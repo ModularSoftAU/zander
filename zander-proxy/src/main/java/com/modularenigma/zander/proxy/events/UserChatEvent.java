@@ -3,16 +3,17 @@ package com.modularenigma.zander.proxy.events;
 import com.jayway.jsonpath.JsonPath;
 import com.modularenigma.zander.proxy.ConfigurationManager;
 import com.modularenigma.zander.proxy.ZanderProxyMain;
-import com.modularenigma.zander.proxy.model.filter.PhraseFilter;
+import com.modularenigma.zander.proxy.model.Filter;
 import io.github.ModularEnigma.Request;
 import io.github.ModularEnigma.Response;
-import com.modularenigma.zander.proxy.model.discord.DiscordChat;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+
+import static com.jayway.jsonpath.Criteria.where;
 
 public class UserChatEvent implements Listener {
     private ZanderProxyMain plugin = ZanderProxyMain.getInstance();
@@ -23,7 +24,7 @@ public class UserChatEvent implements Listener {
 
         // Check chat for blocked content
         try {
-            PhraseFilter phrase = PhraseFilter.builder()
+            Filter phrase = Filter.builder()
                     .content(event.getMessage().toString())
                     .build();
 
@@ -37,14 +38,14 @@ public class UserChatEvent implements Listener {
             Response phraseRes = phraseReq.execute();
             String phraseJson = phraseRes.getBody();
 
-//            String phraseCaught = JsonPath.read(phraseJson, "$.success");
-//            String phraseCaughtMessage = JsonPath.read(phraseJson, "$.message");
+            Boolean success = JsonPath.parse(phraseRes).read("$.success");
+            String phraseCaughtMessage = JsonPath.read(phraseJson, "$.message");
 
-//            if (phraseCaught == "false") {
-//                player.sendMessage(new TextComponent(ChatColor.RED + phraseCaughtMessage));
-//                event.setCancelled(true);
-//                return;
-//            }
+            if (!success) {
+                player.sendMessage(new TextComponent(ChatColor.RED + phraseCaughtMessage));
+                event.setCancelled(true);
+                return;
+            }
 
             plugin.getProxy().getConsole().sendMessage(new TextComponent("[FILTER] Response (" + phraseRes.getStatusCode() + "): " + phraseRes.getBody()));
 
