@@ -1,5 +1,5 @@
 main: com.modularenigma.zander.vote.ZanderVoteMain
-name: zander-proxy
+name: zander-vote
 version: ${project.version}
 author: ModularEnigma
 api-version: 1.18

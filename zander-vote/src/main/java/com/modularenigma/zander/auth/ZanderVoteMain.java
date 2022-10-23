@@ -1,4 +1,4 @@
-package com.modularenigma.zander.vote;
+package com.modularenigma.zander.auth;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

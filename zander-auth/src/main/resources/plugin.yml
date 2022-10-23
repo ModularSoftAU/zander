@@ -1,0 +1,5 @@
+main: com.modularenigma.zander.auth.ZanderAuthMain
+name: zander-auth
+version: ${project.version}
+author: ModularEnigma
+api-version: 1.18
