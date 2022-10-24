@@ -30,7 +30,7 @@ public class UserOnLogin implements Listener {
                     .build();
 
             Request createUserReq = Request.builder()
-                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/user/new")
+                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/user/create")
                     .setMethod(Request.Method.POST)
                     .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
                     .setRequestBody(createUser.toString())
