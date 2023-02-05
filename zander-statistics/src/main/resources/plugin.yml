@@ -1,5 +1,5 @@
-main: com.modularenigma.zander.statistics.ZanderStatisticsMain
+main: org.modularsoft.zander.statistics.ZanderStatisticsMain
 name: zander-statistics
 version: ${project.version}
-author: ModularEnigma
+author: ModularSoft
 api-version: 1.18
