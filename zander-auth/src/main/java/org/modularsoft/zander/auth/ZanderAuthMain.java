@@ -1,6 +1,6 @@
-package com.modularenigma.zander.auth;
+package org.modularsoft.zander.auth;
 
-import com.modularenigma.zander.auth.events.PlayerVerificationCodePull;
+import org.modularsoft.zander.auth.events.PlayerVerificationCodePull;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -12,7 +12,7 @@ public class ZanderAuthMain extends JavaPlugin {
         plugin = this;
 
         // Init Message
-        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "\n\nZander Auth has been enabled.\nRunning Version " + plugin.getDescription().getVersion() + "\nGitHub Repository: https://github.com/ModularEnigma/zander\nCreated by ModularEnigma\n\n");
+        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "\n\nZander Auth has been enabled.\nRunning Version " + plugin.getDescription().getVersion() + "\nGitHub Repository: https://github.com/ModularSoftAU/zander\nCreated by Modular Software\n\n");
 
         // Event Registry
         PluginManager pluginmanager = this.getServer().getPluginManager();

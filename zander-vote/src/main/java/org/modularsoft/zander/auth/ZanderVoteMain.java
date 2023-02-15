@@ -1,4 +1,4 @@
-package com.modularenigma.zander.auth;
+package org.modularsoft.zander.auth;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

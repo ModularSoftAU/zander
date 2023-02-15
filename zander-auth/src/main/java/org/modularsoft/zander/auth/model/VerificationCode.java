@@ -1,4 +1,4 @@
-package com.modularenigma.zander.auth.model;
+package org.modularsoft.zander.auth.model;
 
 import com.google.gson.Gson;
 import lombok.Builder;

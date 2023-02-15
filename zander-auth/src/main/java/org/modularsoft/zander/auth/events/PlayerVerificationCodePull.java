@@ -1,8 +1,8 @@
-package com.modularenigma.zander.auth.events;
+package org.modularsoft.zander.auth.events;
 
 import com.jayway.jsonpath.JsonPath;
-import com.modularenigma.zander.auth.ZanderAuthMain;
-import com.modularenigma.zander.auth.model.VerificationCode;
+import org.modularsoft.zander.auth.ZanderAuthMain;
+import org.modularsoft.zander.auth.model.VerificationCode;
 import io.github.ModularEnigma.Request;
 import io.github.ModularEnigma.Response;
 import org.bukkit.ChatColor;
@@ -31,7 +31,7 @@ public class PlayerVerificationCodePull implements Listener {
                     .build();
 
             Request codeGenReq = Request.builder()
-                    .setURL(plugin.getConfig().get("BaseAPIURL") + "/web/verify/get?username=" + username)
+                    .setURL(plugin.getConfig().get("BaseAPIURL") + "/web/verify/get?username=" + username + "&platform=ingame")
                     .setMethod(Request.Method.GET)
                     .addHeader("x-access-token", String.valueOf(plugin.getConfig().get("APIKey")))
                     .setRequestBody(codeGen.toString())
