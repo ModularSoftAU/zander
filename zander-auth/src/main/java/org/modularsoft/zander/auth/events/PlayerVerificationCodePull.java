@@ -31,7 +31,7 @@ public class PlayerVerificationCodePull implements Listener {
                     .build();
 
             Request codeGenReq = Request.builder()
-                    .setURL(plugin.getConfig().get("BaseAPIURL") + "/web/verify/get?username=" + username + "&platform=ingame")
+                    .setURL(plugin.getConfig().get("BaseAPIURL") + "/web/verify/get?username=" + username + "&platform=INGAME")
                     .setMethod(Request.Method.GET)
                     .addHeader("x-access-token", String.valueOf(plugin.getConfig().get("APIKey")))
                     .setRequestBody(codeGen.toString())
@@ -41,7 +41,7 @@ public class PlayerVerificationCodePull implements Listener {
             plugin.getServer().getConsoleSender().sendMessage("Response (" + codeGenRes.getStatusCode() + "): " + codeGenRes.getBody());
 
             // Kick user with their code for verification
-            int code = JsonPath.read(codeGenRes.getBody(), "$.code");
+            int code = JsonPath.read(codeGenRes.getBody(), "$.data.code");
             String codeMessage = ChatColor.GREEN + "Verification Code \n" + ChatColor.WHITE + "Go back over to the registration form and use the provided code to verify your Minecraft Account.\n\n" + ChatColor.YELLOW + code;
             event.disallow(PlayerLoginEvent.Result.KICK_BANNED, codeMessage);
         } catch (Exception e) {
