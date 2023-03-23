@@ -2,7 +2,7 @@ main: org.modularsoft.zander.hub.ZanderHubMain
 name: zander-hub
 version: ${project.version}
 author: ModularSoft
-api-version: 1.18
+api-version: 1.19
 
 commands:
   fly:

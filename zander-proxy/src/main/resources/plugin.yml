@@ -2,6 +2,6 @@ main: org.modularsoft.zander.proxy.ZanderProxyMain
 name: zander-proxy
 version: ${project.version}
 author: ModularSoft
-api-version: 1.18
+api-version: 1.19
 softdepend:
   - Votifier
