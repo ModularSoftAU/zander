@@ -1,8 +1,6 @@
 package net.modularsoft.zander.proxy;
 
 import com.jayway.jsonpath.JsonPath;
-import com.modularenigma.zander.proxy.commands.*;
-import com.modularenigma.zander.proxy.events.*;
 import io.github.ModularEnigma.Request;
 import io.github.ModularEnigma.Response;
 import net.md_5.bungee.api.ChatColor;
