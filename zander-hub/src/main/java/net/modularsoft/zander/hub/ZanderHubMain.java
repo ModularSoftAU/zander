@@ -1,7 +1,6 @@
 package net.modularsoft.zander.hub;
 
 import net.modularsoft.zander.hub.commands.fly;
-import com.modularenigma.zander.hub.events.*;
 import net.modularsoft.zander.hub.events.HubBoosterPlate;
 import net.modularsoft.zander.hub.events.HubPlayerJoin;
 import net.modularsoft.zander.hub.events.HubPlayerJoinChristmas;
@@ -10,7 +9,7 @@ import net.modularsoft.zander.hub.gui.HubCompassItem;
 import net.modularsoft.zander.hub.protection.HubCreatureSpawnProtection;
 import net.modularsoft.zander.hub.protection.HubInteractionProtection;
 import net.modularsoft.zander.hub.protection.HubProtection;
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
