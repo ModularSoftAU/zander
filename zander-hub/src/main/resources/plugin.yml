@@ -1,8 +1,8 @@
-main: com.modularenigma.zander.hub.ZanderHubMain
+main: org.modularsoft.zander.hub.ZanderHubMain
 name: zander-hub
 version: ${project.version}
-author: ModularEnigma
-api-version: 1.18
+author: ModularSoft
+api-version: 1.19
 
 commands:
   fly:

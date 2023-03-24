@@ -1,7 +1,7 @@
-main: com.modularenigma.zander.proxy.ZanderProxyMain
+main: net.modularsoft.zander.proxy.ZanderProxyMain
 name: zander-proxy
 version: ${project.version}
-author: ModularEnigma
-api-version: 1.18
+author: ModularSoft
+api-version: 1.19
 softdepend:
   - Votifier
