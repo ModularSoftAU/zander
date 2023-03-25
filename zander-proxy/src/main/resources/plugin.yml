@@ -1,4 +1,4 @@
-main: org.modularsoft.zander.proxy.ZanderProxyMain
+main: net.modularsoft.zander.proxy.ZanderProxyMain
 name: zander-proxy
 version: ${project.version}
 author: ModularSoft

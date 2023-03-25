@@ -1,7 +1,7 @@
 package org.modularsoft.zander.auth;
 
+import org.bukkit.ChatColor;
 import org.modularsoft.zander.auth.events.PlayerVerificationCodePull;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 

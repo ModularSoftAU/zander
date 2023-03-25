@@ -1,5 +1,5 @@
 main: org.modularsoft.zander.vote.ZanderVoteMain
-name: zander-vote
+name: zander-proxy
 version: ${project.version}
-author: ModularSoftware
+author: ModularSoft
 api-version: 1.19
