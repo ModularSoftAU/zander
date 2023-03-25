@@ -5,3 +5,4 @@ author: ModularSoft
 api-version: 1.19
 softdepend:
   - Votifier
+  - AdvancedBan

@@ -44,6 +44,8 @@ public class ZanderProxyMain extends Plugin implements Listener {
             getProxy().getPluginManager().registerListener(this, new UserOnSwitch());
             getProxy().getPluginManager().registerListener(this, new UserOnVote());
             getProxy().getPluginManager().registerListener(this, new UserOnProxyPing());
+            getProxy().getPluginManager().registerListener(this, new UserOnPunishment());
+            getProxy().getPluginManager().registerListener(this, new UserOnPunishmentRevoke());
 
 //        ProxyServer.getInstance().getScheduler().schedule(plugin, new Runnable() {
 //            @Override

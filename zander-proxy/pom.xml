@@ -84,6 +84,13 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/nuvotifier.jar</systemPath>
         </dependency>
+
+        <!-- AdvancedBan -->
+        <dependency>
+            <groupId>com.github.DevLeoko</groupId>
+            <artifactId>AdvancedBan</artifactId>
+            <version>v2.3.0</version>
+        </dependency>
     </dependencies>
 
 </project>
