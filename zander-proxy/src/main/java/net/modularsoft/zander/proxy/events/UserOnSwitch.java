@@ -8,7 +8,7 @@ import io.github.ModularEnigma.Request;
 import io.github.ModularEnigma.Response;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.event.ServerSwitchEvent;
+import net.md_5.bungee.api.event.ServerConnectedEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
@@ -18,11 +18,11 @@ public class UserOnSwitch implements Listener {
     private ZanderProxyMain plugin = ZanderProxyMain.getInstance();
 
     @EventHandler
-    public void UserSwitchEvent (ServerSwitchEvent event) {
+    public void onServerConnect(ServerConnectedEvent event) {
         ProxiedPlayer player = event.getPlayer();
         String username = player.getDisplayName();
         UUID playerUUID = player.getUniqueId();
-        String server = event.getFrom().getName();
+        String server = event.getServer().getInfo().getName();
 
         try {
             //
@@ -45,11 +45,12 @@ public class UserOnSwitch implements Listener {
         } catch (Exception e) {
             player.disconnect(new TextComponent("An error has occurred. Is the API down?"));
             System.out.println(e);
+            return;
         }
 
         try {
             //
-            // Server Switch event throws an error when user has not switched from anywhere.
+            // Discord Switch API POST
             //
             DiscordSwitch discordSwitch = DiscordSwitch.builder()
                     .username(username)
@@ -68,7 +69,7 @@ public class UserOnSwitch implements Listener {
         } catch (Exception e) {
             player.disconnect(new TextComponent("An error has occurred. Is the API down?"));
             System.out.println(e);
+            return;
         }
     }
-
 }

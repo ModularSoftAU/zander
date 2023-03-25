@@ -57,9 +57,6 @@ public class UserOnLogin implements Listener {
                         .build();
 
                 Response createSessionRes = createSessionReq.execute();
-                String json = createSessionRes.getBody();
-
-                System.out.println(json);
 
                 plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + createSessionRes.getStatusCode() + "): " + createSessionRes.getBody()));
 
