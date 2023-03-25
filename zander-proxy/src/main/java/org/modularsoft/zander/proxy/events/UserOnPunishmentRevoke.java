@@ -15,7 +15,7 @@ public class UserOnPunishmentRevoke implements Listener {
     private ZanderProxyMain plugin = ZanderProxyMain.getInstance();
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void PlayerOnPunish(PunishmentEvent event) {
+    public void PlayerOnPunishRevoke(PunishmentEvent event) {
         int id = event.getPunishment().getId();
 
         // POST request to provide
