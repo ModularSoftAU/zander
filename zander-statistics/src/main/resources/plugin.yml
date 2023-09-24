@@ -1,5 +1,0 @@
-main: org.modularsoft.zander.statistics.ZanderStatisticsMain
-name: zander-statistics
-version: ${project.version}
-author: ModularSoft
-api-version: 1.19

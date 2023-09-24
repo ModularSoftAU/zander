@@ -13,7 +13,6 @@ import org.modularsoft.zander.proxy.model.punishment.PunishmentIssue;
 
 public class UserOnPunishment implements Listener {
     private ZanderProxyMain plugin = ZanderProxyMain.getInstance();
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void PlayerOnPunish(PunishmentEvent event) {
         String punisheduser = event.getPunishment().getName();
