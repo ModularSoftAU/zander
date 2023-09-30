@@ -12,8 +12,6 @@
     <modules>
         <module>zander-proxy</module>
         <module>zander-hub</module>
-        <module>zander-statistics</module>
-        <module>zander-vote</module>
     </modules>
 
     <properties>
