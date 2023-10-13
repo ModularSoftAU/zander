@@ -12,6 +12,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import org.modularsoft.zander.proxy.model.discord.DiscordChat;
 
 import static com.jayway.jsonpath.Criteria.where;
 
@@ -46,7 +47,22 @@ public class UserChatEvent implements Listener {
             if (!success) {
                 player.sendMessage(new TextComponent(ChatColor.RED + phraseCaughtMessage));
                 event.setCancelled(true);
-                return;
+            } else {
+                DiscordChat chat = DiscordChat.builder()
+                        .username(((ProxiedPlayer) event.getSender()).getDisplayName())
+                        .server(((ProxiedPlayer) event.getSender()).getServer().getInfo().getName())
+                        .content(event.getMessage().toString())
+                        .build();
+
+                Request discordChatReq = Request.builder()
+                        .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/discord/chat")
+                        .setMethod(Request.Method.POST)
+                        .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
+                        .setRequestBody(chat.toString())
+                        .build();
+
+                Response discordChatReqRes = discordChatReq.execute();
+                plugin.getProxy().getConsole().sendMessage(new TextComponent("Response (" + discordChatReqRes.getStatusCode() + "): " + discordChatReqRes.getBody()));
             }
         } catch (Exception e) {
             player.sendMessage(new TextComponent(ChatColor.YELLOW + "The chat filter could not be reached at this time, there maybe an issue with the API."));
