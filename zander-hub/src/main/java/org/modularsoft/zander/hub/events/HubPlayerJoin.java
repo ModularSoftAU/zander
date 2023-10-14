@@ -56,7 +56,7 @@ public class HubPlayerJoin implements Listener {
             firework.setFireworkMeta(fireworkmeta);
 
             // Send new user a MOTD seperate to the main MOTD
-            List<String> newplayermotd = plugin.configurationManager.getmotd().getStringList("newplayermotd");
+            List<String> newplayermotd = plugin.configurationManager.getwelcome().getStringList("newplayerwelcome");
             for (String s : newplayermotd) {
                 event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', s));
             }

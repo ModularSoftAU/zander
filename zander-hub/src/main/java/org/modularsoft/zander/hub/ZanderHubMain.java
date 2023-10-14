@@ -26,7 +26,7 @@ public class ZanderHubMain extends JavaPlugin {
 //        this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new PluginMessageChannel(this));
 
         // Init Message
-        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "\n\nZander Hub has been enabled.\nRunning Version " + plugin.getDescription().getVersion() + "\nGitHub Repository: https://github.com/crafting-for-christ/zander-hub\nCreated by Ben Robson\n\n");
+        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "\n\nZander Hub has been enabled.\nRunning Version " + plugin.getDescription().getVersion() + "\nGitHub Repository: https://github.com/ModularSoftAU/zander\nCreated by Modular Software\n\n");
 
         // Event Registry
         PluginManager pluginmanager = this.getServer().getPluginManager();
@@ -52,8 +52,6 @@ public class ZanderHubMain extends JavaPlugin {
     public void loadConfigurationManager() {
         configurationManager = new ConfigurationManager(plugin);
         configurationManager.loadlocalConfiguration(); // Loading the config.yml
-
-        configurationManager.setupmotd();
     }
 
     @Override
