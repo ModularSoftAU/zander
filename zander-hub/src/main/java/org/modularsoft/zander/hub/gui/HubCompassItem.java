@@ -66,6 +66,10 @@ public class HubCompassItem implements Listener {
         }
 
         Player player = (Player) event.getWhoClicked();
+        if (player == null) {
+            return;
+        }
+
         event.setCancelled(true);
 
         if (event.getCurrentItem() == null || event.getCurrentItem().getType() == null || !event.getCurrentItem().hasItemMeta()) {
@@ -100,5 +104,6 @@ public class HubCompassItem implements Listener {
                 break;
         }
     }
+
 
 }
