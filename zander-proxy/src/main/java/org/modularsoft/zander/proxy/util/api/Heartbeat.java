@@ -11,12 +11,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class Heartbeat {
-
     public static void startHeartbeatTask() {
         // Create a ScheduledExecutorService with a single thread
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-        // Schedule the task to run every 10 seconds
+        // Schedule the task to run every 60 seconds
         scheduler.scheduleAtFixedRate(() -> {
             try {
                 // Your existing code here
@@ -50,6 +49,6 @@ public class Heartbeat {
                     player.disconnect("API Heartbeat Failed, the server is temporarily offline.");
                 });
             }
-        }, 0, 10, TimeUnit.SECONDS);
+        }, 0, 60, TimeUnit.SECONDS);
     }
 }

@@ -23,6 +23,9 @@ public class UserChatEvent implements Listener {
     public void UserChatEvent(ChatEvent event) {
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
 
+        // Filter out commands.
+        if (event.getMessage().startsWith("/")) return;
+
         // Check chat for blocked content
         try {
             Filter phrase = Filter.builder()

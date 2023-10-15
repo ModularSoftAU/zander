@@ -18,21 +18,30 @@ public class UserOnProxyPing implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void PlayerOnProxyPing(ProxyPingEvent event) {
-        ServerPing serverPing = event.getResponse();
+        try {
+            ServerPing serverPing = event.getResponse();
 
-        // GET request to fetch MOTD.
-        Request req = Request.builder()
-                .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/announcement/get?announcementType=motd")
-                .setMethod(Request.Method.GET)
-                .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
-                .build();
+            // GET request to fetch MOTD.
+            Request req = Request.builder()
+                    .setURL(ConfigurationManager.getConfig().get("BaseAPIURL") + "/announcement/get?announcementType=motd")
+                    .setMethod(Request.Method.GET)
+                    .addHeader("x-access-token", String.valueOf(ConfigurationManager.getConfig().get("APIKey")))
+                    .build();
 
-        Response res = req.execute();
-        String json = res.getBody();
+            Response res = req.execute();
+            String json = res.getBody();
 
-        String colourMessageFormat = JsonPath.read(json, "$.data[0].colourMessageFormat");
+            String colourMessageFormat = JsonPath.read(json, "$.data[0].colourMessageFormat");
 
-        serverPing.setDescriptionComponent(new TextComponent(ChatColor.translateAlternateColorCodes('&', colourMessageFormat)));
-        event.setResponse(serverPing);
+            serverPing.setDescriptionComponent(new TextComponent(ChatColor.translateAlternateColorCodes('&', String.valueOf(ConfigurationManager.getConfig().get("announcementMOTDTopLine"))) + "\n" + ChatColor.translateAlternateColorCodes('&', colourMessageFormat)));
+            event.setResponse(serverPing);
+        } catch (Exception e) {
+            System.out.print(e);
+
+            ServerPing serverPing = event.getResponse();
+
+            serverPing.setDescriptionComponent(new TextComponent(ChatColor.translateAlternateColorCodes('&', String.valueOf(ConfigurationManager.getConfig().get("announcementMOTDTopLine"))) + "\n" + ChatColor.translateAlternateColorCodes('&', "&3&lPowered by Zander")));
+            event.setResponse(serverPing);
+        }
     }
 }

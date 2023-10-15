@@ -17,33 +17,35 @@ public class ConfigurationManager {
     }
     private static Location HubLocation;
 
-    public FileConfiguration motdFile;
-    public File motdfile;
+    public FileConfiguration welcomeFile;
+    public File welcomefile;
 
     public void loadlocalConfiguration() {
         plugin.saveDefaultConfig();
         plugin.reloadConfig();
         plugin.saveConfig();
+
+        setupwelcome();
     }
 
     //
-    // MOTD File
+    // Welcome File
     //
-    public void setupmotd() {
+    public void setupwelcome() {
         if (!plugin.getDataFolder().exists()) {
             plugin.getDataFolder().mkdir();
         }
-        motdfile = new File(plugin.getDataFolder(), "motd.yml");
+        welcomefile = new File(plugin.getDataFolder(), "welcome.yml");
 
-        if (!motdfile.exists()) {
-            plugin.saveResource("motd.yml", false);
-            Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "The motd.yml file has been created.");
+        if (!welcomefile.exists()) {
+            plugin.saveResource("welcome.yml", false);
+            Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "The welcome.yml file has been created.");
         }
-        motdFile = YamlConfiguration.loadConfiguration(motdfile);
+        welcomeFile = YamlConfiguration.loadConfiguration(welcomefile);
     }
 
-    public FileConfiguration getmotd() {
-        return motdFile;
+    public FileConfiguration getwelcome() {
+        return welcomeFile;
     }
 
     public static Location getHubLocation() {

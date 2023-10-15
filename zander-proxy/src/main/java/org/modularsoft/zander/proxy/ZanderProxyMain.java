@@ -6,6 +6,7 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.api.plugin.Plugin;
 import org.modularsoft.zander.proxy.commands.*;
 import org.modularsoft.zander.proxy.events.*;
+import org.modularsoft.zander.proxy.util.announcement.TipChatter;
 import org.modularsoft.zander.proxy.util.api.Heartbeat;
 
 public class ZanderProxyMain extends Plugin implements Listener {
@@ -35,6 +36,9 @@ public class ZanderProxyMain extends Plugin implements Listener {
 
         // Start the Heartbeat task
         Heartbeat.startHeartbeatTask();
+
+        // Start the Announcement Tip task
+        TipChatter.startAnnouncementTipTask();
     }
 
     @Override
