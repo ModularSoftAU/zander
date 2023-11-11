@@ -1,5 +1,7 @@
 package org.modularsoft.zander.hub.events;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.modularsoft.zander.hub.ConfigurationManager;
 import org.modularsoft.zander.hub.ZanderHubMain;
 import org.modularsoft.zander.hub.items.NavigationCompassItem;
@@ -16,8 +18,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.metadata.MetadataValue;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class HubPlayerJoin implements Listener {
     ZanderHubMain plugin;
@@ -26,20 +28,20 @@ public class HubPlayerJoin implements Listener {
     }
 
     @EventHandler
-    public void HubPlayerJoin(PlayerJoinEvent event) {
+    public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        player.getInventory().clear(); // Clear the Players inventory for miscellaneous items
+        // Clear the Players inventory for miscellaneous items
+        player.getInventory().clear();
 
         // Teleport Player to Hub spawn point
-        if (ConfigurationManager.getHubLocation() != null) {
-            player.teleport(ConfigurationManager.getHubLocation());
-        }
+        player.teleport(ConfigurationManager.getHubLocation());
 
-        NavigationCompassItem.givecompass(player); // Give player navigation compass
+        NavigationCompassItem.giveCompass(player); // Give player navigation compass
         player.getInventory().setHeldItemSlot(4); // Set the players current slot to the navigation compass
 
-        event.setJoinMessage(null); // disable default join message
+        event.joinMessage(null);
+//        event.setJoinMessage(null); // disable default join message
 
         if (!player.hasPlayedBefore()) {
             // New user Joins for first time celebratory firework
@@ -56,7 +58,7 @@ public class HubPlayerJoin implements Listener {
             firework.setFireworkMeta(fireworkmeta);
 
             // Send new user a MOTD seperate to the main MOTD
-            List<String> newplayermotd = plugin.configurationManager.getwelcome().getStringList("newplayerwelcome");
+            List<String> newplayermotd = ConfigurationManager.getWelcome().getStringList("newplayerwelcome");
             for (String s : newplayermotd) {
                 event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', s));
             }
@@ -73,16 +75,26 @@ public class HubPlayerJoin implements Listener {
 //            }
 //        }
 
-        player.playSound(player.getLocation(), Arrays.asList(Sound.values()).get((int) (Math.random() * (Sound.values().length - 1))), 1f,1f); // Play random sound
+        // Play random sound
+        int randomSoundIndex = new Random().nextInt() % Sound.values().length - 1;
+        Sound randomChosenSound = Sound.values()[randomSoundIndex];
+        player.playSound(player.getLocation(), randomChosenSound, 1f,1f);
 
-        if (isVanished(player) == false) {
-            Bukkit.broadcastMessage(ChatColor.GRAY + event.getPlayer().getDisplayName() + " joined.");
+        if (!isVanished(player)) {
+            Component broadcastMessage = Component.empty()
+                    .color(NamedTextColor.GRAY)
+                    .append(event.getPlayer().name())
+                    .append(Component.text(" joined."));
+
+            for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
+                otherPlayer.sendMessage(broadcastMessage);
+            }
         }
 
         player.setCollidable(true); // Disable player collision.
 
         // If user has the fly permission, enable flight
-        if (player.hasPermission("zanderhub.fly")) {
+        if (player.hasPermission("zander.hub.fly")) {
             player.setAllowFlight(true);
         }
     }
@@ -93,5 +105,4 @@ public class HubPlayerJoin implements Listener {
         }
         return false;
     }
-
 }

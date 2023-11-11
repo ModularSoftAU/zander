@@ -18,7 +18,7 @@ public class HubBoosterPlate implements Listener {
     }
 
     @EventHandler
-    public void HubBoosterPlate(PlayerMoveEvent event) {
+    public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         Location location = player.getLocation();
         Location pplatelocation = new Location(location.getWorld(), location.getX(), location.getY(), location.getZ());
@@ -29,5 +29,4 @@ public class HubBoosterPlate implements Listener {
             player.playSound(player.getLocation(), ENTITY_FIREWORK_ROCKET_SHOOT, 1f,1f);
         }
     }
-
 }

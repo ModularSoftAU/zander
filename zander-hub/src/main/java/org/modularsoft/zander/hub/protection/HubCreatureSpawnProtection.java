@@ -15,16 +15,20 @@ public class HubCreatureSpawnProtection implements Listener {
 
     // Block entity spawning and the use of spawn eggs
     @EventHandler
-    public void onMobSpawn(CreatureSpawnEvent event) {
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
         CreatureSpawnEvent.SpawnReason reason = event.getSpawnReason();
+        boolean isValidReason = reason == CreatureSpawnEvent.SpawnReason.DEFAULT
+//                || reason == CreatureSpawnEvent.SpawnReason.CHUNK_GEN // Deprecated. Covered by NATURAL?
+                || reason == CreatureSpawnEvent.SpawnReason.NATURAL
+                || reason == CreatureSpawnEvent.SpawnReason.NETHER_PORTAL
+                || reason == CreatureSpawnEvent.SpawnReason.DISPENSE_EGG
+                || reason == CreatureSpawnEvent.SpawnReason.REINFORCEMENTS;
 
-        if (reason == CreatureSpawnEvent.SpawnReason.CHUNK_GEN || reason == CreatureSpawnEvent.SpawnReason.DEFAULT || reason == CreatureSpawnEvent.SpawnReason.NATURAL || reason == CreatureSpawnEvent.SpawnReason.NETHER_PORTAL || reason == CreatureSpawnEvent.SpawnReason.DISPENSE_EGG || reason == CreatureSpawnEvent.SpawnReason.REINFORCEMENTS) {
-            if (event.getEntity().getType().equals(EntityType.VILLAGER) || event.getEntity().getType().equals(EntityType.PILLAGER)) {
-                event.setCancelled(false);
-            } else {
-                event.setCancelled(true);
-            }
+        if (isValidReason) {
+            boolean isPillagerOrVillager = event.getEntity().getType().equals(EntityType.VILLAGER)
+                    || event.getEntity().getType().equals(EntityType.PILLAGER);
+
+            event.setCancelled(!isPillagerOrVillager);
         }
     }
-
 }

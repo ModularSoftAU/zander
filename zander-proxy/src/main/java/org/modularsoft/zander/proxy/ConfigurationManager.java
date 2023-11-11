@@ -14,7 +14,8 @@ public class ConfigurationManager {
     private static ZanderProxyMain plugin = ZanderProxyMain.getInstance();
 
     private static Configuration config;
-    public static Configuration initConfig() {
+
+    public static void initConfig() {
         File dataFolder = plugin.getDataFolder();
         if (!dataFolder.exists()) if (!dataFolder.mkdirs()) plugin.getLogger().info("Failed to create configuration folder.");
 
@@ -42,16 +43,12 @@ public class ConfigurationManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return config;
     }
 
     public static Configuration getConfig() {
+        if (config == null)
+            initConfig();
+
         return config;
     }
-
-    public void setConfig(Configuration newConfig) {
-        config = newConfig;
-    }
-
 }

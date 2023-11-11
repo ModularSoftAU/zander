@@ -1,5 +1,6 @@
 package org.modularsoft.zander.hub.protection;
 
+import org.bukkit.entity.EntityType;
 import org.modularsoft.zander.hub.ZanderHubMain;
 import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
@@ -128,7 +129,10 @@ public class HubProtection implements Listener {
 
     // Block users from picking up items
     @EventHandler(priority = EventPriority.HIGH)
-    public void pickupItem(PlayerPickupItemEvent event) {
+    public void pickupItem(EntityPickupItemEvent event) {
+        if (event.getEntity().getType() != EntityType.PLAYER)
+            return;
+
         event.setCancelled(true);
     }
 
@@ -147,19 +151,19 @@ public class HubProtection implements Listener {
     // Hide the normal join message
     @EventHandler(priority = EventPriority.HIGH)
     public void HideJoinMessage(PlayerJoinEvent event) {
-        event.setJoinMessage(null);
+        event.joinMessage(null);
     }
 
     // Hide the normal leave message
     @EventHandler(priority = EventPriority.HIGH)
     public void HideLeaveMessage(PlayerQuitEvent event) {
-        event.setQuitMessage(null);
+        event.quitMessage(null);
     }
 
     // Hide all death messages
     @EventHandler(priority = EventPriority.HIGH)
     public void HideDeathMessage(PlayerDeathEvent event) {
-        event.setDeathMessage(null);
+        event.deathMessage(null);
     }
 
     // If user looses hunger, instantly reset hunger

@@ -1,9 +1,9 @@
 package org.modularsoft.zander.hub.gui;
 
-import org.modularsoft.zander.hub.ZanderHubMain;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.modularsoft.zander.hub.events.PluginMessageChannel;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,64 +15,54 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 public class HubCompassItem implements Listener {
-
-    ZanderHubMain plugin;
-    public void navigationgui(ZanderHubMain plugin) {
-        this.plugin = plugin;
-    }
+    static final Inventory navCompass = Bukkit.createInventory(null, 9, "Server Selector");
 
     @EventHandler
-    public void navigationgui(PlayerInteractEvent event) {
+    public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
         if (player.getInventory().getItemInMainHand().getType() == Material.COMPASS) {
             if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() ==  Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                CompassNavGUI(player);
+                navCompassGui(player);
             }
         }
     }
 
-    Inventory compnav = Bukkit.createInventory(null, 9, "Server Selector");
-
-    public void CompassNavGUI(Player player) {
+    public void navCompassGui(Player player) {
         if (player == null) {
             return;
         }
 
         ItemStack survival = new ItemStack(Material.IRON_PICKAXE);
         ItemMeta survivalMeta = survival.getItemMeta();
-        survivalMeta.setDisplayName(ChatColor.WHITE + "Survival");
-        survivalMeta.setLore(Arrays.asList(ChatColor.WHITE + "Click me to join our Survival server."));
+        survivalMeta.displayName(Component.text("Survival", NamedTextColor.WHITE));
+        survivalMeta.lore(Collections.singletonList(Component.text("Click me to join our Survival server.", NamedTextColor.WHITE)));
         survival.setItemMeta(survivalMeta);
-        compnav.setItem(4, survival);
+        navCompass.setItem(4, survival);
 
         ItemStack mixed = new ItemStack(Material.IRON_SWORD);
         ItemMeta mixedMeta = mixed.getItemMeta();
-        mixedMeta.setDisplayName(ChatColor.WHITE + "Mixed");
-        mixedMeta.setLore(Arrays.asList(ChatColor.WHITE + "Play and Destroy your friends in Minigames."));
+        mixedMeta.displayName(Component.text("Mixed", NamedTextColor.WHITE));
+        mixedMeta.lore(Collections.singletonList(Component.text("Play and Destroy your friends in Minigames.", NamedTextColor.WHITE)));
         mixed.setItemMeta(mixedMeta);
-        compnav.setItem(6, mixed);
+        navCompass.setItem(6, mixed);
 
-        player.openInventory(compnav);
+        player.openInventory(navCompass);
     }
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        if (!event.getView().getTitle().equalsIgnoreCase("Server Selector")) {
+        if (event.getInventory() != navCompass) {
             return;
         }
 
         Player player = (Player) event.getWhoClicked();
-        if (player == null) {
-            return;
-        }
-
         event.setCancelled(true);
 
-        if (event.getCurrentItem() == null || event.getCurrentItem().getType() == null || !event.getCurrentItem().hasItemMeta()) {
+        if (event.getCurrentItem() == null || !event.getCurrentItem().hasItemMeta()) {
             player.closeInventory();
             return;
         }
@@ -81,22 +71,22 @@ public class HubCompassItem implements Listener {
             // Survival
             case IRON_PICKAXE:
                 player.closeInventory();
-                player.sendMessage(ChatColor.YELLOW + "Sending you to Survival..");
+                player.sendMessage(Component.text("Sending you to Survival..", NamedTextColor.YELLOW));
                 if (player.hasPermission("bungeecord.server.survival")) {
                     PluginMessageChannel.connect(player, "survival");
                 } else  {
-                    player.sendMessage(ChatColor.RED + "You do not have access to this server.");
+                    player.sendMessage(Component.text("You do not have access to this server.", NamedTextColor.RED));
                 }
                 break;
 
             // Events
             case IRON_SWORD:
                 player.closeInventory();
-                player.sendMessage(ChatColor.YELLOW + "Sending you to Mixed..");
+                player.sendMessage(Component.text("Sending you to Mixed..", NamedTextColor.YELLOW));
                 if (player.hasPermission("bungeecord.server.mixed")) {
                     PluginMessageChannel.connect(player, "mixed");
                 } else  {
-                    player.sendMessage(ChatColor.RED + "You do not have access to this server.");
+                    player.sendMessage(Component.text("You do not have access to this server.", NamedTextColor.RED));
                 }
                 break;
 
@@ -104,6 +94,4 @@ public class HubCompassItem implements Listener {
                 break;
         }
     }
-
-
 }
