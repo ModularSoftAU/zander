@@ -76,7 +76,7 @@ public class HubPlayerJoin implements Listener {
 //        }
 
         // Play random sound
-        int randomSoundIndex = new Random().nextInt() % Sound.values().length - 1;
+        int randomSoundIndex = (int) (Math.random() * Sound.values().length - 1);
         Sound randomChosenSound = Sound.values()[randomSoundIndex];
         player.playSound(player.getLocation(), randomChosenSound, 1f,1f);
 

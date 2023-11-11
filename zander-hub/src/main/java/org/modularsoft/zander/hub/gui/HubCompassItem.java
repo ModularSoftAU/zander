@@ -41,7 +41,7 @@ public class HubCompassItem implements Listener {
         survivalMeta.displayName(Component.text("Survival", NamedTextColor.WHITE));
         survivalMeta.lore(Collections.singletonList(Component.text("Click me to join our Survival server.", NamedTextColor.WHITE)));
         survival.setItemMeta(survivalMeta);
-        navCompass.setItem(4, survival);
+        navCompass.setItem(2, survival);
 
         ItemStack mixed = new ItemStack(Material.IRON_SWORD);
         ItemMeta mixedMeta = mixed.getItemMeta();
@@ -71,7 +71,7 @@ public class HubCompassItem implements Listener {
             // Survival
             case IRON_PICKAXE:
                 player.closeInventory();
-                player.sendMessage(Component.text("Sending you to Survival..", NamedTextColor.YELLOW));
+                player.sendMessage(Component.text("Sending you to Survival...", NamedTextColor.YELLOW));
                 if (player.hasPermission("bungeecord.server.survival")) {
                     PluginMessageChannel.connect(player, "survival");
                 } else  {
@@ -82,7 +82,7 @@ public class HubCompassItem implements Listener {
             // Events
             case IRON_SWORD:
                 player.closeInventory();
-                player.sendMessage(Component.text("Sending you to Mixed..", NamedTextColor.YELLOW));
+                player.sendMessage(Component.text("Sending you to Mixed...", NamedTextColor.YELLOW));
                 if (player.hasPermission("bungeecord.server.mixed")) {
                     PluginMessageChannel.connect(player, "mixed");
                 } else  {
