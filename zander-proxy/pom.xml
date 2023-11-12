@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>zander</artifactId>
-        <groupId>com.modularenigma</groupId>
+        <groupId>org.modularsoft</groupId>
         <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -28,7 +28,7 @@
         <!-- PaperMC/WaterFall -->
         <repository>
             <id>papermc</id>
-            <url>https://papermc.io/repo/repository/maven-public/</url>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
         <repository>
             <id>maven2</id>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>io.github.waterfallmc</groupId>
             <artifactId>waterfall-api</artifactId>
-            <version>1.18-R0.1-SNAPSHOT</version>
+            <version>1.19-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -63,12 +63,12 @@
         <dependency>
             <groupId>io.github.ModularEnigma</groupId>
             <artifactId>Requests</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.3</version>
         </dependency>
         <dependency>
             <groupId>com.jayway.jsonpath</groupId>
             <artifactId>json-path</artifactId>
-            <version>2.7.0</version>
+            <version>2.8.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
