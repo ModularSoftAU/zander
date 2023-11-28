@@ -22,7 +22,7 @@ public class UserSocialSpyEvent implements Listener {
         ProxiedPlayer player = (ProxiedPlayer) event.getSender();
         String command = event.getMessage().substring(1); // Remove the leading slash
 
-        if (command.startsWith("msg") || command.startsWith("tell") || command.startsWith("w")) {
+        if (command.startsWith("msg") || command.startsWith("tell") || command.startsWith("w") || command.startsWith("message") || command.startsWith("r")) {
             String[] messageParts = event.getMessage().split(" ");
             String targetPlayer = messageParts[1];
             String directMessage = String.join(" ", Arrays.copyOfRange(messageParts, 2, messageParts.length));

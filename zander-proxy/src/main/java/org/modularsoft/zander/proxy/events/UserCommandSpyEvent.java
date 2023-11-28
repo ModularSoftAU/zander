@@ -20,8 +20,8 @@ public class UserCommandSpyEvent implements Listener {
             String command = event.getMessage().substring(1); // Remove the leading slash
             ProxiedPlayer player = (ProxiedPlayer) event.getSender();
 
-            // Exclude "/msg" commands from being logged
-            if (command.startsWith("msg") || command.startsWith("tell") || command.startsWith("w")) {
+            // Excludes specific commands from being logged in both spy events.
+            if (command.startsWith("msg") || command.startsWith("tell") || command.startsWith("w") || command.startsWith("message") || command.startsWith("r")) {
                 return;
             }
 
