@@ -33,6 +33,8 @@ public class ZanderProxyMain extends Plugin implements Listener {
         getProxy().getPluginManager().registerListener(this, new UserOnDisconnect());
         getProxy().getPluginManager().registerListener(this, new UserOnSwitch());
         getProxy().getPluginManager().registerListener(this, new UserOnProxyPing());
+        getProxy().getPluginManager().registerListener(this, new UserCommandSpyEvent());
+        getProxy().getPluginManager().registerListener(this, new UserSocialSpyEvent());
 
         // Start the Heartbeat task
         Heartbeat.startHeartbeatTask();
