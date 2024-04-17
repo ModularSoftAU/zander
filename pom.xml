@@ -10,8 +10,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>zander-proxy</module>
+        <module>zander-waterfall</module>
         <module>zander-hub</module>
+        <module>zander-velocity</module>
     </modules>
 
     <properties>
