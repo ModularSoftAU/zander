@@ -15,9 +15,7 @@ import dev.dejvokep.boostedyaml.settings.general.GeneralSettings;
 import dev.dejvokep.boostedyaml.settings.loader.LoaderSettings;
 import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
 import lombok.Getter;
-import org.modularsoft.zander.velocity.events.UserChatEvent;
-import org.modularsoft.zander.velocity.events.UserCommandSpyEvent;
-import org.modularsoft.zander.velocity.events.UserOnSwitch;
+import org.modularsoft.zander.velocity.events.*;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -40,7 +38,7 @@ public class ZanderVelocityMain {
     @Getter
     private static Logger logger;
     @Getter
-    private final ProxyServer proxy;
+    private static ProxyServer proxy;
     @Getter
     private static YamlDocument config;
 
@@ -50,6 +48,8 @@ public class ZanderVelocityMain {
         proxy.getEventManager().register(this, new UserCommandSpyEvent());
         proxy.getEventManager().register(this, new UserChatEvent());
         proxy.getEventManager().register(this, new UserOnSwitch());
+        proxy.getEventManager().register(this, new UserOnLogin());
+        proxy.getEventManager().register(this, new UserOnDisconnect());
 
         // Commands
 
