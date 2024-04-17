@@ -20,6 +20,8 @@ import org.modularsoft.zander.velocity.commands.discord;
 import org.modularsoft.zander.velocity.commands.rules;
 import org.modularsoft.zander.velocity.commands.website;
 import org.modularsoft.zander.velocity.events.*;
+import org.modularsoft.zander.velocity.util.announcement.TipChatter;
+import org.modularsoft.zander.velocity.util.api.Heartbeat;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -63,6 +65,12 @@ public class ZanderVelocityMain {
         commandManager.register("discord", new discord());
         commandManager.register("rules", new rules());
         commandManager.register("website", new website());
+
+        // Start the Heartbeat task
+        Heartbeat.startHeartbeatTask();
+
+        // Start the Announcement Tip task
+        TipChatter.startAnnouncementTipTask();
     }
 
     @Inject
