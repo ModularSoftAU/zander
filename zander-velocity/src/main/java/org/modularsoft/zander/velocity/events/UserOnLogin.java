@@ -15,7 +15,7 @@ import org.modularsoft.zander.velocity.model.session.SessionCreate;
 import org.modularsoft.zander.velocity.model.user.UserCreation;
 
 public class UserOnLogin {
-    @Subscribe(order = PostOrder.FIRST)
+    @Subscribe
     public void UserLoginEvent (PostLoginEvent event) {
         Player player = event.getPlayer();
         String BaseAPIURL = ZanderVelocityMain.getConfig().getString(Route.from("BaseAPIURL"));

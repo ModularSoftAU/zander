@@ -1,6 +1,9 @@
 package org.modularsoft.zander.velocity;
 
 import com.google.inject.Inject;
+import com.velocitypowered.api.command.CommandManager;
+import com.velocitypowered.api.command.CommandMeta;
+import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.plugin.Dependency;
@@ -15,6 +18,7 @@ import dev.dejvokep.boostedyaml.settings.general.GeneralSettings;
 import dev.dejvokep.boostedyaml.settings.loader.LoaderSettings;
 import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
 import lombok.Getter;
+import org.modularsoft.zander.velocity.commands.discord;
 import org.modularsoft.zander.velocity.events.*;
 import org.slf4j.Logger;
 
@@ -41,6 +45,8 @@ public class ZanderVelocityMain {
     private static ProxyServer proxy;
     @Getter
     private static YamlDocument config;
+    @Getter
+    private final CommandManager commandManager;
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
@@ -52,6 +58,9 @@ public class ZanderVelocityMain {
         proxy.getEventManager().register(this, new UserOnDisconnect());
 
         // Commands
+        CommandManager commandManager = proxy.getCommandManager();
+
+        commandManager.register("discord", new discord());
 
     }
 
@@ -59,10 +68,12 @@ public class ZanderVelocityMain {
     public ZanderVelocityMain(
             ProxyServer proxy,
             Logger logger,
+            CommandManager commandManager,
             @DataDirectory Path dataDirectory
     ) {
         this.proxy = proxy;
         this.logger = logger;
+        this.commandManager = commandManager;
 
         // Create configuration file
         try {
