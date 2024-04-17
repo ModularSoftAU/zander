@@ -2,8 +2,6 @@ package org.modularsoft.zander.velocity;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.command.CommandManager;
-import com.velocitypowered.api.command.CommandMeta;
-import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.plugin.Dependency;
@@ -19,6 +17,8 @@ import dev.dejvokep.boostedyaml.settings.loader.LoaderSettings;
 import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
 import lombok.Getter;
 import org.modularsoft.zander.velocity.commands.discord;
+import org.modularsoft.zander.velocity.commands.rules;
+import org.modularsoft.zander.velocity.commands.website;
 import org.modularsoft.zander.velocity.events.*;
 import org.slf4j.Logger;
 
@@ -61,7 +61,8 @@ public class ZanderVelocityMain {
         CommandManager commandManager = proxy.getCommandManager();
 
         commandManager.register("discord", new discord());
-
+        commandManager.register("rules", new rules());
+        commandManager.register("website", new website());
     }
 
     @Inject
