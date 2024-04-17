@@ -18,7 +18,6 @@ public class UserChatEvent {
     @Subscribe
     public void UserChatEvent(PlayerChatEvent event) {
         Player player = event.getPlayer();
-
         String BaseAPIURL = ZanderVelocityMain.getConfig().getString(Route.from("BaseAPIURL"));
         String APIKey = ZanderVelocityMain.getConfig().getString(Route.from("APIKey"));
 
