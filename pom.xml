@@ -12,6 +12,7 @@
     <modules>
         <module>zander-proxy</module>
         <module>zander-hub</module>
+        <module>zander-auth</module>
     </modules>
 
     <properties>

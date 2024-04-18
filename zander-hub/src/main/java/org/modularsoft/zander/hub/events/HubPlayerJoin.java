@@ -19,7 +19,6 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.metadata.MetadataValue;
 
 import java.util.List;
-import java.util.Random;
 
 public class HubPlayerJoin implements Listener {
     ZanderHubMain plugin;
@@ -64,16 +63,6 @@ public class HubPlayerJoin implements Listener {
             }
             event.getPlayer().sendMessage(" "); // Separate between messages
         }
-
-//        NOTE:: This has been removed due to the MOTD having lack of purpose and content.
-
-//        if (player.hasPlayedBefore()) {
-//            // Dispatch MOTD to user
-//            List<String> motd = plugin.configurationManager.getmotd().getStringList("motd");
-//            for (String s : motd) {
-//                event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes('&', s));
-//            }
-//        }
 
         // Play random sound
         int randomSoundIndex = (int) (Math.random() * Sound.values().length - 1);
