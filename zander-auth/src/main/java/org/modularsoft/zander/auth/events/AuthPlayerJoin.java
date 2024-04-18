@@ -53,7 +53,8 @@ public class AuthPlayerJoin implements Listener {
                 event.getPlayer().kickPlayer(ChatColor.RED + message);
             }
         } catch (Exception e) {
-            event.getPlayer().kickPlayer(String.valueOf(new TextComponent("An error has occurred. Is the API down?")));
+            String reason = ChatColor.RED + "An error has occurred. Is the API down?";
+            player.kickPlayer(reason);
             System.out.println(e);
         }
     }

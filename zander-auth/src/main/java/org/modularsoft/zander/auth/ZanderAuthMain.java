@@ -6,6 +6,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.modularsoft.zander.auth.events.AuthPlayerJoin;
+import org.modularsoft.zander.auth.events.UserOnServerPing;
 
 public class ZanderAuthMain extends JavaPlugin {
     public static ZanderAuthMain plugin;
@@ -25,6 +26,7 @@ public class ZanderAuthMain extends JavaPlugin {
         // Event Registry
         PluginManager pluginmanager = this.getServer().getPluginManager();
         pluginmanager.registerEvents(new AuthPlayerJoin(this), this);
+        pluginmanager.registerEvents(new UserOnServerPing(), this);
 
         saveConfig();
     }
