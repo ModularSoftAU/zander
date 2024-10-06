@@ -26,6 +26,7 @@ public class ZanderProxyMain extends Plugin implements Listener {
         getProxy().getPluginManager().registerCommand(this, new rules());
         getProxy().getPluginManager().registerCommand(this, new discord());
         getProxy().getPluginManager().registerCommand(this, new website());
+        getProxy().getPluginManager().registerCommand(this, new report());
 
         // Event Registry
         getProxy().getPluginManager().registerListener(this, new UserChatEvent());
