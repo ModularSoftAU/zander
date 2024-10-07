@@ -11,10 +11,13 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.modularsoft.zander.velocity.ZanderVelocityMain;
 import org.modularsoft.zander.velocity.model.discord.DiscordSwitch;
 import org.modularsoft.zander.velocity.model.session.SessionSwitch;
+import org.slf4j.Logger;
 
 import java.util.UUID;
 
 public class UserOnSwitch {
+    private static final Logger logger = ZanderVelocityMain.getLogger();
+
     @Subscribe
     public void onServerConnect(ServerConnectedEvent event) {
         Player player = event.getPlayer();
@@ -24,10 +27,10 @@ public class UserOnSwitch {
         String BaseAPIURL = ZanderVelocityMain.getConfig().getString(Route.from("BaseAPIURL"));
         String APIKey = ZanderVelocityMain.getConfig().getString(Route.from("APIKey"));
 
+        logger.info("Player {} is switching to server {}", username, server);
+
+        // Handle Session Switch API
         try {
-            //
-            // Switch Session API POST
-            //
             SessionSwitch switchSession = SessionSwitch.builder()
                     .uuid(playerUUID)
                     .server(server)
@@ -37,21 +40,19 @@ public class UserOnSwitch {
                     .setURL(BaseAPIURL + "/session/switch")
                     .setMethod(Request.Method.POST)
                     .addHeader("x-access-token", APIKey)
-                    .setRequestBody(switchSession.toString())
+                    .setRequestBody(switchSession.toString())  // Ensure this method works properly
                     .build();
 
             Response switchSessionRes = switchSessionReq.execute();
-            ZanderVelocityMain.getLogger().info("Response (" + switchSessionRes.getStatusCode() + "): " + switchSessionRes.getBody());
+            logger.info("Session Switch Response ({}): {}", switchSessionRes.getStatusCode(), switchSessionRes.getBody());
         } catch (Exception e) {
-            Component builder = Component.text("An error has occurred. Is the API down?").color(NamedTextColor.RED);
-            player.disconnect(builder);
-            System.out.println(e);
+            logger.error("Error during Session Switch API request", e);
+            player.disconnect(Component.text("An error has occurred. Please try again later.").color(NamedTextColor.RED));
+            return; // Exit if a session switch fails
         }
 
+        // Handle Discord Switch API
         try {
-            //
-            // Discord Switch API POST
-            //
             DiscordSwitch discordSwitch = DiscordSwitch.builder()
                     .username(username)
                     .server(server)
@@ -61,15 +62,14 @@ public class UserOnSwitch {
                     .setURL(BaseAPIURL + "/discord/switch")
                     .setMethod(Request.Method.POST)
                     .addHeader("x-access-token", APIKey)
-                    .setRequestBody(discordSwitch.toString())
+                    .setRequestBody(discordSwitch.toString())  // Ensure this method works properly
                     .build();
 
             Response discordSwitchRes = discordSwitchReq.execute();
-            ZanderVelocityMain.getLogger().info("Response (" + discordSwitchRes.getStatusCode() + "): " + discordSwitchRes.getBody());
+            logger.info("Discord Switch Response ({}): {}", discordSwitchRes.getStatusCode(), discordSwitchRes.getBody());
         } catch (Exception e) {
-            Component builder = Component.text("An error has occurred. Is the API down?").color(NamedTextColor.RED);
-            player.disconnect(builder);
-            System.out.println(e);
+            logger.error("Error during Discord Switch API request", e);
+            player.sendMessage(Component.text("An error occurred, but you can still continue playing.").color(NamedTextColor.RED));
         }
     }
 }

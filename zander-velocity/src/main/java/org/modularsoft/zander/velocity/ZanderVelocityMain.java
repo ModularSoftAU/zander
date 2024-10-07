@@ -16,9 +16,7 @@ import dev.dejvokep.boostedyaml.settings.general.GeneralSettings;
 import dev.dejvokep.boostedyaml.settings.loader.LoaderSettings;
 import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
 import lombok.Getter;
-import org.modularsoft.zander.velocity.commands.discord;
-import org.modularsoft.zander.velocity.commands.rules;
-import org.modularsoft.zander.velocity.commands.website;
+import org.modularsoft.zander.velocity.commands.*;
 import org.modularsoft.zander.velocity.events.*;
 import org.modularsoft.zander.velocity.util.announcement.TipChatter;
 import org.modularsoft.zander.velocity.util.api.Heartbeat;
@@ -44,7 +42,7 @@ public class ZanderVelocityMain {
     @Getter
     private static Logger logger;
     @Getter
-    private static ProxyServer proxy;
+    public static ProxyServer proxy;
     @Getter
     private static YamlDocument config;
     @Getter
@@ -54,12 +52,12 @@ public class ZanderVelocityMain {
     public void onProxyInitialization(ProxyInitializeEvent event) {
         // Event Listeners
         proxy.getEventManager().register(this, new UserChatEvent());
-        proxy.getEventManager().register(this, new UserCommandSpyEvent());
+        proxy.getEventManager().register(this, new UserCommandSpyEvent()); // Issues
         proxy.getEventManager().register(this, new UserOnDisconnect());
         proxy.getEventManager().register(this, new UserOnLogin());
         proxy.getEventManager().register(this, new UserOnProxyPing());
         proxy.getEventManager().register(this, new UserOnSwitch());
-        proxy.getEventManager().register(this, new UserSocialSpyEvent());
+        proxy.getEventManager().register(this, new UserSocialSpyEvent()); // Issues
 
         // Commands
         CommandManager commandManager = proxy.getCommandManager();
@@ -67,6 +65,8 @@ public class ZanderVelocityMain {
         commandManager.register("discord", new discord());
         commandManager.register("rules", new rules());
         commandManager.register("website", new website());
+        commandManager.register("ping", new ping());
+        commandManager.register("report", new report());
 
         // Start the Heartbeat task
         Heartbeat.startHeartbeatTask();
