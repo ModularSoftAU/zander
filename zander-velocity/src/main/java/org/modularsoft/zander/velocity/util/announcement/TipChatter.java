@@ -56,8 +56,8 @@ public class TipChatter {
                     Component message = LegacyComponentSerializer.legacy(translate).deserialize(announcementTipPrefix + " " + colourMessageFormat);
 
                     if (link != null && !link.isEmpty()) {
-                        // Set the click event only if link is true
-                        message.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, link));
+                        // Set the click event and reassign the modified message to the variable
+                        message = message.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, link));
                     }
                     player.sendMessage(message);
                 });

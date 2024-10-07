@@ -21,9 +21,11 @@ public class UserSocialSpyEvent {
     private static final Logger logger = ZanderVelocityMain.getLogger();
 
     @Subscribe
-    public void onUserChatEvent(PlayerChatEvent event) {
+    public void onUserChatDMEvent(PlayerChatEvent event) {
         Player player = event.getPlayer();
         String message = event.getMessage();
+
+        ZanderVelocityMain.getLogger().info("Message: {}", message);
 
         // Check if the message is a direct message command
         if (message.startsWith("/msg") || message.startsWith("/tell") || message.startsWith("/w") ||

@@ -14,11 +14,13 @@ import org.modularsoft.zander.velocity.model.discord.spy.DiscordCommandSpy;
 public class UserCommandSpyEvent {
 
     @Subscribe
-    public void UserChatEvent(PlayerChatEvent event) {
+    public void onPlayerCommand(PlayerChatEvent event) {
         Player player = event.getPlayer();
         String BaseAPIURL = ZanderVelocityMain.getConfig().getString(Route.from("BaseAPIURL"));
         String APIKey = ZanderVelocityMain.getConfig().getString(Route.from("APIKey"));
         String command = event.getMessage().substring(1); // Remove the leading slash
+
+        ZanderVelocityMain.getLogger().info("Command: {}", command);
 
         if (event.getMessage().startsWith("/")) {
             // Excludes specific commands from being logged in both spy events.
