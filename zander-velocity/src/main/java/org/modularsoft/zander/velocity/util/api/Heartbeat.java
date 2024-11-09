@@ -23,8 +23,6 @@ public class Heartbeat {
         // Schedule the task to run every 60 seconds
         scheduler.scheduleAtFixedRate(() -> {
             try {
-                // Your existing code here
-                // GET request to link to rules.
                 Request req = Request.builder()
                         .setURL(BaseAPIURL + "/heartbeat")
                         .setMethod(Request.Method.GET)

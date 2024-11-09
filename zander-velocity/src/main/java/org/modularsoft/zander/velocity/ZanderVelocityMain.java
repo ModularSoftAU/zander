@@ -19,6 +19,7 @@ import lombok.Getter;
 import org.modularsoft.zander.velocity.commands.*;
 import org.modularsoft.zander.velocity.events.*;
 import org.modularsoft.zander.velocity.util.announcement.TipChatter;
+import org.modularsoft.zander.velocity.util.api.Bridge;
 import org.modularsoft.zander.velocity.util.api.Heartbeat;
 import org.slf4j.Logger;
 
@@ -73,6 +74,9 @@ public class ZanderVelocityMain {
 
         // Start the Announcement Tip task
         TipChatter.startAnnouncementTipTask();
+
+        // Start the Bridge task
+        Bridge.startBridgeTask();
     }
 
     @Inject
