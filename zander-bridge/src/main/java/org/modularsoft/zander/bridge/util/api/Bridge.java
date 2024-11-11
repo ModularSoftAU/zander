@@ -1,13 +1,12 @@
-package org.modularsoft.zander.velocity.util.api;
+package org.modularsoft.zander.bridge.util.api;
 
 import com.jayway.jsonpath.JsonPath;
-import dev.dejvokep.boostedyaml.route.Route;
 import io.github.ModularEnigma.Request;
 import io.github.ModularEnigma.Response;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import org.modularsoft.zander.velocity.ZanderVelocityMain;
-import org.modularsoft.zander.velocity.model.BridgeProcess;
+import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
+import org.modularsoft.zander.bridge.ZanderBridgeMain;
+import org.modularsoft.zander.bridge.model.BridgeProcess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,16 +14,22 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.CompletableFuture;
 
 public class Bridge {
     // Initialize the logger
     private static final Logger logger = LoggerFactory.getLogger(Bridge.class);
 
-    public static void startBridgeTask() {
-        String BaseAPIURL = ZanderVelocityMain.getConfig().getString(Route.from("BaseAPIURL"));
-        String APIKey = ZanderVelocityMain.getConfig().getString(Route.from("APIKey"));
-        String TargetServerName = ZanderVelocityMain.getConfig().getString(Route.from("TargetServerName"));
+    private final ZanderBridgeMain plugin;
+
+    // Constructor to get the instance of the plugin
+    public Bridge(ZanderBridgeMain plugin) {
+        this.plugin = plugin;
+    }
+
+    public void startBridgeTask() {
+        String BaseAPIURL = plugin.getConfig().getString("BaseAPIURL");
+        String APIKey = plugin.getConfig().getString("APIKey");
+        String TargetServerName = plugin.getConfig().getString("TargetServerName");
 
         // Create a ScheduledExecutorService with a single thread
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -55,13 +60,11 @@ public class Bridge {
                     int bridgeId = JsonPath.read(dataEntry, "$.bridgeId");
                     String command = JsonPath.read(dataEntry, "$.command");
 
-                    // Execute the command asynchronously
-                    CompletableFuture<Boolean> future = ZanderVelocityMain.getProxy()
-                            .getCommandManager()
-                            .executeImmediatelyAsync(ZanderVelocityMain.getProxy().getConsoleCommandSource(), command);
+                    // Execute the command asynchronously on the main server thread
+                    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+                        boolean executedSuccessfully = Bukkit.getServer().dispatchCommand(console, command);
 
-                    // Handle the result when the execution completes
-                    future.thenAccept(executedSuccessfully -> {
                         if (executedSuccessfully) {
                             logger.info("Command executed successfully: {}", command);
 
@@ -79,25 +82,21 @@ public class Bridge {
                                         .build();
 
                                 Response bridgeProcessRes = bridgeProcessReq.execute();
-                                ZanderVelocityMain.getLogger().info("Response (" + bridgeProcessRes.getStatusCode() + "): " + bridgeProcessRes.getBody());
+                                logger.info("Response (" + bridgeProcessRes.getStatusCode() + "): " + bridgeProcessRes.getBody());
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                ZanderVelocityMain.getLogger().error("Failed to process command: {}", bridgeId);
+                                logger.error("Failed to process command: {}", bridgeId);
                             }
                         } else {
                             logger.warn("Command execution failed: {}", command);
                         }
-                    }).exceptionally(ex -> {
-                        // Handle exceptions during command execution
-                        logger.error("Command execution encountered an error: {}", command, ex);
-                        return null;
                     });
                 }
 
             } catch (Exception e) {
                 // Handle exceptions here
                 e.printStackTrace();
-                ZanderVelocityMain.getLogger().error("Fetching Bridge actions Failed.");
+                logger.error("Fetching Bridge actions Failed.");
             }
         }, 0, 60, TimeUnit.SECONDS);
     }

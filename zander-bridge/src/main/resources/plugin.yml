@@ -1,0 +1,5 @@
+main: org.modularsoft.zander.bridge.ZanderBridgeMain
+name: zander-bridge
+version: ${project.version}
+author: ModularSoft
+api-version: 1.19
