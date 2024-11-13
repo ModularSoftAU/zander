@@ -1,7 +1,7 @@
 package org.modularsoft.zander.velocity.events;
 
 import com.velocitypowered.api.event.Subscribe;
-import com.velocitypowered.api.event.player.PlayerChatEvent;
+import com.velocitypowered.api.event.command.CommandExecuteEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ServerConnection;
 import dev.dejvokep.boostedyaml.route.Route;
@@ -21,25 +21,30 @@ public class UserSocialSpyEvent {
     private static final Logger logger = ZanderVelocityMain.getLogger();
 
     @Subscribe
-    public void onUserChatDMEvent(PlayerChatEvent event) {
-        Player player = event.getPlayer();
-        String message = event.getMessage();
+    public void onUserChatDMEvent(CommandExecuteEvent event) {
+        // Ensure the command source is a player
+        if (!(event.getCommandSource() instanceof Player)) {
+            return;
+        }
 
-        ZanderVelocityMain.getLogger().info("Message: {}", message);
+        Player player = (Player) event.getCommandSource();
+        String command = event.getCommand();
 
-        // Check if the message is a direct message command
-        if (message.startsWith("/msg") || message.startsWith("/tell") || message.startsWith("/w") ||
-                message.startsWith("/message") || message.startsWith("/r")) {
+        ZanderVelocityMain.getLogger().info("Command: {}", command);
+
+        // Check if the command is a direct message command
+        if (command.contains("msg") || command.contains("tell") || command.contains("w")
+                || command.contains("message") || command.contains("r")) {
 
             // Split the command into parts and check for minimum required arguments
-            String[] messageParts = message.split(" ");
-            if (messageParts.length < 3) {
+            String[] commandParts = command.split(" ");
+            if (commandParts.length < 3) {
                 logger.warn("Invalid direct message format from player: {}", player.getUsername());
                 return; // Invalid command format, return without processing
             }
 
-            String targetPlayer = messageParts[1]; // The player who is being messaged
-            String directMessage = String.join(" ", Arrays.copyOfRange(messageParts, 2, messageParts.length)); // The actual message
+            String targetPlayer = commandParts[1]; // The player who is being messaged
+            String directMessage = String.join(" ", Arrays.copyOfRange(commandParts, 2, commandParts.length)); // The actual message
 
             try {
                 // Ensure the player is connected to a server

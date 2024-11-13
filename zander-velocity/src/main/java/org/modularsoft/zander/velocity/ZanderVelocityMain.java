@@ -68,6 +68,7 @@ public class ZanderVelocityMain {
         commandManager.register(commandManager.metaBuilder("website").build(), new website());
         commandManager.register(commandManager.metaBuilder("ping").build(), new ping());
         commandManager.register(commandManager.metaBuilder("report").build(), new report());
+        commandManager.register(commandManager.metaBuilder("alert").build(), new alert());
 
         // Start the Heartbeat task
         Heartbeat.startHeartbeatTask();
