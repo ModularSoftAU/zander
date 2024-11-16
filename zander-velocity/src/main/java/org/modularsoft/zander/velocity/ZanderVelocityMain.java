@@ -53,12 +53,12 @@ public class ZanderVelocityMain {
     public void onProxyInitialization(ProxyInitializeEvent event) {
         // Event Listeners
         proxy.getEventManager().register(this, new UserChatEvent());
-        proxy.getEventManager().register(this, new UserCommandSpyEvent()); // Issues
+        proxy.getEventManager().register(this, new UserCommandSpyEvent());
         proxy.getEventManager().register(this, new UserOnDisconnect());
         proxy.getEventManager().register(this, new UserOnLogin());
         proxy.getEventManager().register(this, new UserOnProxyPing());
         proxy.getEventManager().register(this, new UserOnSwitch());
-        proxy.getEventManager().register(this, new UserSocialSpyEvent()); // Issues
+        proxy.getEventManager().register(this, new UserSocialSpyEvent());
 
         // Commands
         CommandManager commandManager = proxy.getCommandManager();
