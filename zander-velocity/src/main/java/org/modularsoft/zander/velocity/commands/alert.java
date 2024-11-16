@@ -36,7 +36,7 @@ public class alert implements SimpleCommand {
         // Use the LegacyComponentSerializer to handle color codes and prefix
         char translate = '&';
         Component message = LegacyComponentSerializer.legacy(translate)
-                .deserialize(alertCommandPrefix + " " + alertMessage);
+                .deserialize(alertCommandPrefix + alertMessage);
 
         // Broadcast the alert message
         ZanderVelocityMain.getProxy().sendMessage(message);

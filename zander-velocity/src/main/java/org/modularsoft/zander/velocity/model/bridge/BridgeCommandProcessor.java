@@ -1,11 +1,11 @@
-package org.modularsoft.zander.velocity.model;
+package org.modularsoft.zander.velocity.model.bridge;
 
 import com.google.gson.Gson;
 import lombok.Builder;
 import lombok.Getter;
 
 @Builder
-public class BridgeProcess {
+public class BridgeCommandProcessor {
 
     @Getter Integer bridgeId;
 

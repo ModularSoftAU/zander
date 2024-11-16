@@ -19,8 +19,9 @@ import lombok.Getter;
 import org.modularsoft.zander.velocity.commands.*;
 import org.modularsoft.zander.velocity.events.*;
 import org.modularsoft.zander.velocity.util.announcement.TipChatter;
-import org.modularsoft.zander.velocity.util.api.Bridge;
+import org.modularsoft.zander.velocity.util.api.bridge.CommandProcessor;
 import org.modularsoft.zander.velocity.util.api.Heartbeat;
+import org.modularsoft.zander.velocity.util.api.bridge.ServerSync;
 import org.slf4j.Logger;
 
 import java.io.File;
@@ -70,14 +71,11 @@ public class ZanderVelocityMain {
         commandManager.register(commandManager.metaBuilder("report").build(), new report());
         commandManager.register(commandManager.metaBuilder("alert").build(), new alert());
 
-        // Start the Heartbeat task
+        // Start tasks
         Heartbeat.startHeartbeatTask();
-
-        // Start the Announcement Tip task
         TipChatter.startAnnouncementTipTask();
-
-        // Start the Bridge task
-        Bridge.startBridgeTask();
+        CommandProcessor.startBridgeTask();
+        ServerSync.startServerSyncTask();
     }
 
     @Inject

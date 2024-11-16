@@ -1,13 +1,11 @@
-package org.modularsoft.zander.velocity.util.api;
+package org.modularsoft.zander.velocity.util.api.bridge;
 
 import com.jayway.jsonpath.JsonPath;
 import dev.dejvokep.boostedyaml.route.Route;
 import io.github.ModularEnigma.Request;
 import io.github.ModularEnigma.Response;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.modularsoft.zander.velocity.ZanderVelocityMain;
-import org.modularsoft.zander.velocity.model.BridgeProcess;
+import org.modularsoft.zander.velocity.model.bridge.BridgeCommandProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,9 +15,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.CompletableFuture;
 
-public class Bridge {
+public class CommandProcessor {
     // Initialize the logger
-    private static final Logger logger = LoggerFactory.getLogger(Bridge.class);
+    private static final Logger logger = LoggerFactory.getLogger(CommandProcessor.class);
 
     public static void startBridgeTask() {
         String BaseAPIURL = ZanderVelocityMain.getConfig().getString(Route.from("BaseAPIURL"));
@@ -53,7 +51,15 @@ public class Bridge {
                 // Loop through each entry in the data list
                 for (Object dataEntry : dataList) {
                     int bridgeId = JsonPath.read(dataEntry, "$.bridgeId");
+                    int processedInt = JsonPath.read(dataEntry, "$.processed"); // Read as int
+                    boolean processed = (processedInt == 1); // Convert int to boolean
                     String command = JsonPath.read(dataEntry, "$.command");
+
+                    // Skip processing if the command is already processed
+                    if (processed) {
+                        logger.info("Command with bridgeId {} has already been processed, skipping.", bridgeId);
+                        continue; // Skip to the next iteration if already processed
+                    }
 
                     // Execute the command asynchronously
                     CompletableFuture<Boolean> future = ZanderVelocityMain.getProxy()
@@ -67,7 +73,7 @@ public class Bridge {
 
                             // Mark the command as processed
                             try {
-                                BridgeProcess bridgeProcess = BridgeProcess.builder()
+                                BridgeCommandProcessor bridgeCommandProcessor = BridgeCommandProcessor.builder()
                                         .bridgeId(bridgeId)
                                         .build();
 
@@ -75,7 +81,7 @@ public class Bridge {
                                         .setURL(BaseAPIURL + "/bridge/command/process")
                                         .setMethod(Request.Method.POST)
                                         .addHeader("x-access-token", APIKey)
-                                        .setRequestBody(bridgeProcess.toString())
+                                        .setRequestBody(bridgeCommandProcessor.toString())
                                         .build();
 
                                 Response bridgeProcessRes = bridgeProcessReq.execute();
