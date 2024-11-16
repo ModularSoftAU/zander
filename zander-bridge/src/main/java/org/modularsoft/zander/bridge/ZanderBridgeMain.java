@@ -26,7 +26,7 @@ public class ZanderBridgeMain extends JavaPlugin {
         Bridge bridge = new Bridge(this);
         bridge.startBridgeTask();
 
-        saveConfig();
+        saveDefaultConfig();
     }
 
     @Override

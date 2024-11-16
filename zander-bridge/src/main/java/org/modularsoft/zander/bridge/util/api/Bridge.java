@@ -60,8 +60,8 @@ public class Bridge {
                     int bridgeId = JsonPath.read(dataEntry, "$.bridgeId");
                     String command = JsonPath.read(dataEntry, "$.command");
 
-                    // Execute the command asynchronously on the main server thread
-                    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                    // Execute the command synchronously on the main server thread
+                    Bukkit.getScheduler().runTask(plugin, () -> {
                         ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                         boolean executedSuccessfully = Bukkit.getServer().dispatchCommand(console, command);
 

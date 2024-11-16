@@ -53,12 +53,12 @@ public class ZanderVelocityMain {
     public void onProxyInitialization(ProxyInitializeEvent event) {
         // Event Listeners
         proxy.getEventManager().register(this, new UserChatEvent());
-        proxy.getEventManager().register(this, new UserCommandSpyEvent()); // Issues
+        proxy.getEventManager().register(this, new UserCommandSpyEvent());
         proxy.getEventManager().register(this, new UserOnDisconnect());
         proxy.getEventManager().register(this, new UserOnLogin());
         proxy.getEventManager().register(this, new UserOnProxyPing());
         proxy.getEventManager().register(this, new UserOnSwitch());
-        proxy.getEventManager().register(this, new UserSocialSpyEvent()); // Issues
+        proxy.getEventManager().register(this, new UserSocialSpyEvent());
 
         // Commands
         CommandManager commandManager = proxy.getCommandManager();
@@ -68,6 +68,7 @@ public class ZanderVelocityMain {
         commandManager.register(commandManager.metaBuilder("website").build(), new website());
         commandManager.register(commandManager.metaBuilder("ping").build(), new ping());
         commandManager.register(commandManager.metaBuilder("report").build(), new report());
+        commandManager.register(commandManager.metaBuilder("alert").build(), new alert());
 
         // Start the Heartbeat task
         Heartbeat.startHeartbeatTask();
