@@ -57,7 +57,7 @@ public class ZanderVelocityMain {
         proxy.getEventManager().register(this, new UserCommandSpyEvent());
         proxy.getEventManager().register(this, new UserOnDisconnect());
         proxy.getEventManager().register(this, new UserOnLogin());
-        proxy.getEventManager().register(this, new UserOnProxyPing());
+        proxy.getEventManager().register(this, new UserOnProxyPing(this));
         proxy.getEventManager().register(this, new UserOnSwitch());
         proxy.getEventManager().register(this, new UserSocialSpyEvent());
 

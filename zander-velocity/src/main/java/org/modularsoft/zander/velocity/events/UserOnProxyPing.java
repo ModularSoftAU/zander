@@ -1,9 +1,10 @@
 package org.modularsoft.zander.velocity.events;
 
 import com.jayway.jsonpath.JsonPath;
+import com.velocitypowered.api.event.PostOrder;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyPingEvent;
-import com.velocitypowered.api.proxy.server.ServerPing;
+import com.velocitypowered.api.proxy.server.ServerPing.Builder;
 import dev.dejvokep.boostedyaml.route.Route;
 import io.github.ModularEnigma.Request;
 import io.github.ModularEnigma.Response;
@@ -13,50 +14,58 @@ import org.modularsoft.zander.velocity.ZanderVelocityMain;
 
 public class UserOnProxyPing {
 
-    @Subscribe
-    public void onProxyPingEvent(ProxyPingEvent event) {
-        try {
-            // ServerPing serverPing = event.getPing();
-            String BaseAPIURL = ZanderVelocityMain.getConfig().getString(Route.from("BaseAPIURL"));
-            String APIKey = ZanderVelocityMain.getConfig().getString(Route.from("APIKey"));
+    private final ZanderVelocityMain plugin;
 
-            // GET request to fetch MOTD.
+    public UserOnProxyPing(ZanderVelocityMain plugin) {
+        this.plugin = plugin;
+        plugin.getProxy().getEventManager().register(plugin, this);
+    }
+
+    @Subscribe(order = PostOrder.FIRST)
+    public void onProxyPingEvent(ProxyPingEvent event) {
+        // Get the existing ServerPing.Builder from the event
+        Builder pingBuilder = event.getPing().asBuilder();
+
+        try {
+            // Fetch configuration values
+            String baseAPIURL = plugin.getConfig().getString(Route.from("BaseAPIURL"));
+            String apiKey = plugin.getConfig().getString(Route.from("APIKey"));
+
+            // Make a GET request to fetch the MOTD
             Request req = Request.builder()
-                    .setURL(BaseAPIURL + "/announcement/get?announcementType=motd")
+                    .setURL(baseAPIURL + "/announcement/get?announcementType=motd")
                     .setMethod(Request.Method.GET)
-                    .addHeader("x-access-token", APIKey)
+                    .addHeader("x-access-token", apiKey)
                     .build();
 
             Response res = req.execute();
             String json = res.getBody();
 
+            // Parse and format the MOTD
             String colourMessageFormat = JsonPath.read(json, "$.data[0].colourMessageFormat");
-            String motdTopLine = ZanderVelocityMain.getConfig().getString(Route.from("announcementMOTDTopLine"));
+            String motdTopLine = plugin.getConfig().getString(Route.from("announcementMOTDTopLine"));
             Component serverPingDescription = LegacyComponentSerializer.builder()
                     .character('&')
                     .build()
                     .deserialize(motdTopLine + "\n" + colourMessageFormat);
 
-            ServerPing newServerPing = ServerPing.builder()
-                    .description(serverPingDescription)
-                    .build();
+            // Set the description in the ServerPing.Builder
+            pingBuilder.description(serverPingDescription);
 
-            event.setPing(newServerPing);
         } catch (Exception e) {
             System.out.print(e);
-            // ServerPing serverPing = event.getPing();
 
-            String motdTopLine = ZanderVelocityMain.getConfig().getString(Route.from("announcementMOTDTopLine"));
-            Component serverPingDescription = LegacyComponentSerializer.builder()
+            // Fallback MOTD in case of an exception
+            String motdTopLine = plugin.getConfig().getString(Route.from("announcementMOTDTopLine"));
+            Component fallbackDescription = LegacyComponentSerializer.builder()
                     .character('&')
                     .build()
                     .deserialize(motdTopLine + "\n" + "&3&lPowered by Zander");
 
-            ServerPing newServerPing = ServerPing.builder()
-                    .description(serverPingDescription)
-                    .build();
-
-            event.setPing(newServerPing);
+            pingBuilder.description(fallbackDescription);
         }
+
+        // Set the modified ServerPing back to the event
+        event.setPing(pingBuilder.build());
     }
 }
