@@ -5,7 +5,7 @@ import org.bukkit.Sound;
 public class WelcomeSounds {
 
     private WelcomeSounds() {
-        throw new IllegalStateException("Utility class cannot be instantiated");
+        throw new IllegalStateException("Utility class shouldn't be instantiated");
     }
 
     private static final Sound[] SOUNDS = {
