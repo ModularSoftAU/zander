@@ -30,7 +30,7 @@ public class HubPlayerJoin implements Listener {
     // Misc settings
     private static final boolean TEST_ALWAYS_FIRST_JOIN = false; // * default false
     private static final int NAV_COMPASS_SLOT = 4;
-    private static final long ROUTINE_PLAYER_JOINED_DELAY = (long) (1.5f * 20);
+    private static final long ROUTINE_PLAYER_JOINED_DELAY = (long) (1.2f * 20);
 
     // Firework settings
     private static final double FIREWORK_GROUND_HEIGHT = 3; // blocks
@@ -107,8 +107,9 @@ public class HubPlayerJoin implements Listener {
     /// Best used for initial world interactions (player world state changes etc).
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        event.joinMessage(null); // * suppress default
         Player player = event.getPlayer();
+        event.joinMessage(null); // * suppress default
+        chatJoinMessage(player);
         setInitialState(player);
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             // * bukkit uses 'world/playerdata' dir for tracking
@@ -116,7 +117,6 @@ public class HubPlayerJoin implements Listener {
                 chatWelcomeMessage(player);
                 spawnWelcomeFirework(player);
             }
-            chatJoinMessage(player);
             playWelcomeSound(player);
         }, ROUTINE_PLAYER_JOINED_DELAY);
     }
