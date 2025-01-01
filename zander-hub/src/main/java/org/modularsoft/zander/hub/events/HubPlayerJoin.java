@@ -18,9 +18,11 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+
 import org.modularsoft.zander.hub.ConfigurationManager;
 import org.modularsoft.zander.hub.ZanderHubMain;
 import org.modularsoft.zander.hub.items.NavigationCompassItem;
+import org.modularsoft.zander.hub.utils.WelcomeSounds;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,61 +34,16 @@ public class HubPlayerJoin implements Listener {
     private static final int NAV_COMPASS_SLOT = 4;
     private static final long ROUTINE_PLAYER_JOINED_DELAY = (long) (1.2f * 20);
 
+    // Sound settings
+    private static final float SOUND_PITCH = 1.0f;
+    private static final float SOUND_VOLUME = 1.0f;
+
     // Firework settings
     private static final double FIREWORK_GROUND_HEIGHT = 3; // blocks
     private static final long FIREWORK_DETONATE_DELAY = (long) (0.3f * 20);
     private static final Color[] FIREWORK_COLOR_PALETTE = {
             Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW, Color.PURPLE,
             Color.ORANGE, Color.WHITE, Color.AQUA, Color.LIME,
-    };
-
-    // Sound settings
-    private static final float SOUND_PITCH = 1.0f;
-    private static final float SOUND_VOLUME = 1.0f;
-    private static final Sound[] WELCOME_SOUNDS = {
-            Sound.BLOCK_AMETHYST_BLOCK_FALL,
-            Sound.BLOCK_AMETHYST_CLUSTER_BREAK,
-            Sound.BLOCK_BEACON_ACTIVATE,
-            Sound.BLOCK_BELL_RESONATE,
-            Sound.BLOCK_CAMPFIRE_CRACKLE,
-            Sound.BLOCK_COMPOSTER_FILL_SUCCESS,
-            Sound.BLOCK_COPPER_FALL,
-            Sound.BLOCK_DECORATED_POT_HIT,
-            Sound.BLOCK_ENCHANTMENT_TABLE_USE,
-            Sound.BLOCK_ENDER_CHEST_OPEN,
-            Sound.BLOCK_END_PORTAL_FRAME_FILL,
-            Sound.BLOCK_NETHERITE_BLOCK_STEP,
-            Sound.BLOCK_RESPAWN_ANCHOR_CHARGE,
-            Sound.BLOCK_RESPAWN_ANCHOR_DEPLETE,
-            Sound.BLOCK_SCAFFOLDING_PLACE,
-            Sound.BLOCK_WATER_AMBIENT,
-            Sound.ENTITY_ALLAY_AMBIENT_WITHOUT_ITEM,
-            Sound.ENTITY_ARMOR_STAND_BREAK,
-            Sound.ENTITY_AXOLOTL_SPLASH,
-            Sound.ENTITY_CAT_PURREOW,
-            Sound.ENTITY_CHICKEN_DEATH,
-            Sound.ENTITY_CREEPER_PRIMED,
-            Sound.ENTITY_DOLPHIN_ATTACK,
-            Sound.ENTITY_ENDERMAN_TELEPORT,
-            Sound.ENTITY_ENDER_DRAGON_HURT,
-            Sound.ENTITY_EVOKER_DEATH,
-            Sound.ENTITY_FROG_DEATH,
-            Sound.ENTITY_GLOW_SQUID_AMBIENT,
-            Sound.ENTITY_GOAT_AMBIENT,
-            Sound.ENTITY_HOGLIN_AMBIENT,
-            Sound.ENTITY_PIGLIN_ADMIRING_ITEM,
-            Sound.ENTITY_PIG_AMBIENT,
-            Sound.ENTITY_PLAYER_BIG_FALL,
-            Sound.ENTITY_PLAYER_HURT_FREEZE,
-            Sound.ENTITY_SHULKER_SHOOT,
-            Sound.ENTITY_VILLAGER_HURT,
-            Sound.ENTITY_WANDERING_TRADER_AMBIENT,
-            Sound.ENTITY_WANDERING_TRADER_DISAPPEARED,
-            Sound.ENTITY_WANDERING_TRADER_REAPPEARED,
-            Sound.ENTITY_WARDEN_NEARBY_CLOSER,
-            Sound.ENTITY_WITCH_HURT,
-            Sound.ENTITY_WITHER_SKELETON_STEP,
-            Sound.ENTITY_ZOMBIE_INFECT,
     };
 
     private final ZanderHubMain plugin;
@@ -189,6 +146,7 @@ public class HubPlayerJoin implements Listener {
     /// Send a welcome message in player's chat.
     private void chatWelcomeMessage(Player player) {
         List<String> message = ConfigurationManager.getWelcome().getStringList("newplayerwelcome");
+        player.sendMessage("");
         for (String row : message) {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', row));
         }
@@ -208,7 +166,7 @@ public class HubPlayerJoin implements Listener {
 
     /// Play a random sound for the player.
     private void playWelcomeSound(Player player) {
-        Sound randomSound = WELCOME_SOUNDS[(int) (Math.random() * WELCOME_SOUNDS.length)];
+        Sound randomSound = WelcomeSounds.getRandomSound();
         player.playSound(player.getLocation(), randomSound, SOUND_VOLUME, SOUND_PITCH);
     }
 
