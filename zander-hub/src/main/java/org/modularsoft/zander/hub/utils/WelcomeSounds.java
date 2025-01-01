@@ -3,6 +3,11 @@ package org.modularsoft.zander.hub.utils;
 import org.bukkit.Sound;
 
 public class WelcomeSounds {
+
+    private WelcomeSounds() {
+        throw new IllegalStateException("Utility class cannot be instantiated");
+    }
+
     private static final Sound[] SOUNDS = {
             Sound.BLOCK_AMETHYST_BLOCK_FALL,
             Sound.BLOCK_AMETHYST_CLUSTER_BREAK,
