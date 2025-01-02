@@ -61,7 +61,6 @@ public class HubPlayerJoin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-
         setInitialState(player); // * just be aware, runs before checking vanish
         if (Misc.isVanish(player))
             return;
@@ -69,6 +68,8 @@ public class HubPlayerJoin implements Listener {
         event.joinMessage(ConfigurationManager.getMessage().playerJoin(player.displayName()));
 
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            if (!player.isConnected())
+                return;
             // * bukkit uses 'world/playerdata' dir for tracking
             if (!player.hasPlayedBefore() || TEST_ALWAYS_FIRST_JOIN) {
                 chatWelcomeMessage(player);
