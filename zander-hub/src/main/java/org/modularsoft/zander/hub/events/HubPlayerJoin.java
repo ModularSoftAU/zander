@@ -1,7 +1,8 @@
 package org.modularsoft.zander.hub.events;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -15,18 +16,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-
 import org.modularsoft.zander.hub.ConfigurationManager;
 import org.modularsoft.zander.hub.ZanderHubMain;
 import org.modularsoft.zander.hub.items.NavigationCompassItem;
+import org.modularsoft.zander.hub.utils.Misc;
 import org.modularsoft.zander.hub.utils.WelcomeSounds;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class HubPlayerJoin implements Listener {
     // Misc settings
@@ -53,7 +49,7 @@ public class HubPlayerJoin implements Listener {
     }
 
     /// Triggers when player's client first connects.
-    /// Best used for validation and basic setup (permission, flags, etc).
+    /// Good for validation and basic setup (permission, flags, etc).
     @EventHandler
     public void onPlayerLogin(PlayerLoginEvent event) {
         Player player = event.getPlayer();
@@ -61,13 +57,17 @@ public class HubPlayerJoin implements Listener {
     }
 
     /// Triggers when player's client has joined the world.
-    /// Best used for initial world interactions (player world state changes etc).
+    /// Good for initial player world interactions (gameplay state etc).
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        event.joinMessage(null); // * suppress default
-        chatJoinMessage(player);
-        setInitialState(player);
+
+        setInitialState(player); // * just be aware, runs before checking vanish
+        if (Misc.isVanish(player))
+            return;
+
+        event.joinMessage(ConfigurationManager.getMessage().playerJoin(player.displayName()));
+
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             // * bukkit uses 'world/playerdata' dir for tracking
             if (!player.hasPlayedBefore() || TEST_ALWAYS_FIRST_JOIN) {
@@ -107,6 +107,22 @@ public class HubPlayerJoin implements Listener {
         team.addEntry(player.getName());
     }
 
+    /// Play a random sound for the player.
+    private void playWelcomeSound(Player player) {
+        Sound randomSound = WelcomeSounds.getRandomSound();
+        player.playSound(player.getLocation(), randomSound, SOUND_VOLUME, SOUND_PITCH);
+    }
+
+    /// Send a welcome message in player's chat.
+    private void chatWelcomeMessage(Player player) {
+        List<String> message = ConfigurationManager.getWelcome().getStringList("newplayerwelcome");
+        player.sendMessage("");
+        for (String row : message) {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', row));
+        }
+        player.sendMessage("");
+    }
+
     /// Spawn a pretty firework where the player is.
     private void spawnWelcomeFirework(Player player) {
         Location spawnLoc = player.getLocation().add(0, FIREWORK_GROUND_HEIGHT, 0);
@@ -141,38 +157,5 @@ public class HubPlayerJoin implements Listener {
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             firework.detonate();
         }, FIREWORK_DETONATE_DELAY);
-    }
-
-    /// Send a welcome message in player's chat.
-    private void chatWelcomeMessage(Player player) {
-        List<String> message = ConfigurationManager.getWelcome().getStringList("newplayerwelcome");
-        player.sendMessage("");
-        for (String row : message) {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', row));
-        }
-        player.sendMessage("");
-    }
-
-    /// Send a join message in player's chat.
-    private void chatJoinMessage(Player player) {
-        if (isVanished(player))
-            return;
-        Component message = Component.empty()
-                .color(NamedTextColor.GRAY)
-                .append(player.name())
-                .append(Component.text(" joined."));
-        Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(message));
-    }
-
-    /// Play a random sound for the player.
-    private void playWelcomeSound(Player player) {
-        Sound randomSound = WelcomeSounds.getRandomSound();
-        player.playSound(player.getLocation(), randomSound, SOUND_VOLUME, SOUND_PITCH);
-    }
-
-    /// Check if the player is currently vanished.
-    private boolean isVanished(Player player) {
-        return player.getMetadata("vanished").stream().anyMatch(MetadataValue::asBoolean);
-
     }
 }

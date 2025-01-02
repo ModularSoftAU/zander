@@ -2,7 +2,7 @@ package org.modularsoft.zander.hub.utils;
 
 import org.bukkit.Sound;
 
-public class WelcomeSounds {
+public final class WelcomeSounds {
 
     private WelcomeSounds() {
         throw new IllegalStateException("Utility class shouldn't be instantiated");

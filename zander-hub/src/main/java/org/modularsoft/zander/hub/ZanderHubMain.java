@@ -3,6 +3,8 @@ package org.modularsoft.zander.hub;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.modularsoft.zander.hub.commands.fly;
 import org.modularsoft.zander.hub.events.HubBoosterPlate;
 import org.modularsoft.zander.hub.events.HubPlayerJoin;
@@ -12,8 +14,7 @@ import org.modularsoft.zander.hub.gui.HubCompassItem;
 import org.modularsoft.zander.hub.protection.HubCreatureSpawnProtection;
 import org.modularsoft.zander.hub.protection.HubInteractionProtection;
 import org.modularsoft.zander.hub.protection.HubProtection;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.modularsoft.zander.hub.events.HubPlayerLeave;
 
 public class ZanderHubMain extends JavaPlugin {
     public static ZanderHubMain plugin;
@@ -37,6 +38,7 @@ public class ZanderHubMain extends JavaPlugin {
         // Event Registry
         PluginManager pluginmanager = this.getServer().getPluginManager();
         pluginmanager.registerEvents(new HubPlayerJoin(this), this);
+        pluginmanager.registerEvents(new HubPlayerLeave(this), this);
         pluginmanager.registerEvents(new HubPlayerVoid(this), this);
         pluginmanager.registerEvents(new HubBoosterPlate(this), this);
         pluginmanager.registerEvents(new HubPlayerJoinChristmas(this), this);
@@ -53,6 +55,8 @@ public class ZanderHubMain extends JavaPlugin {
 
         ConfigurationManager.getHubLocation();
         saveConfig();
+
+        ConfigurationManager.setupMessage();
     }
 
     @Override
