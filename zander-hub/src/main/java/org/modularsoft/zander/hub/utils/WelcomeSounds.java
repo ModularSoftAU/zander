@@ -4,10 +4,6 @@ import org.bukkit.Sound;
 
 public final class WelcomeSounds {
 
-    private WelcomeSounds() {
-        throw new IllegalStateException("Utility class shouldn't be instantiated");
-    }
-
     private static final Sound[] SOUNDS = {
             Sound.BLOCK_AMETHYST_BLOCK_FALL,
             Sound.BLOCK_AMETHYST_CLUSTER_BREAK,
@@ -53,6 +49,10 @@ public final class WelcomeSounds {
             Sound.ENTITY_WITHER_SKELETON_STEP,
             Sound.ENTITY_ZOMBIE_INFECT,
     };
+
+    private WelcomeSounds() {
+        throw new IllegalStateException("Utility class shouldn't be instantiated");
+    }
 
     public static Sound getRandomSound() {
         return SOUNDS[(int) (Math.random() * SOUNDS.length)];
