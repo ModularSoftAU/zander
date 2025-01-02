@@ -156,7 +156,9 @@ public class HubPlayerJoin implements Listener {
         firework.setFireworkMeta(meta);
 
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            firework.detonate();
+            if (firework.isValid()) {
+                firework.detonate();
+            }
         }, FIREWORK_DETONATE_DELAY);
     }
 }
