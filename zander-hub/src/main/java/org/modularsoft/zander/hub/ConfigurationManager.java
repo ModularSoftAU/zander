@@ -68,25 +68,28 @@ public class ConfigurationManager {
         // ensure join/leave messages exist in 'config.yml'
         boolean hasModifiedConfig = false;
         if (!config.contains("messages.join")) {
-            ZanderHubMain.plugin.getConfig().set("messages.join", "&7%p% joined.");
+            config.set("messages.join", "&7%p% joined.");
             hasModifiedConfig = true;
         }
         if (!config.contains("messages.leave")) {
-            ZanderHubMain.plugin.getConfig().set("messages.leave", "&7%p% left.");
+            config.set("messages.leave", "&7%p% left.");
             hasModifiedConfig = true;
         }
         if (hasModifiedConfig) {
             ZanderHubMain.plugin.saveConfig();
         }
 
-        String messageJoin = ZanderHubMain.plugin.getConfig().getString("messages.join");
-        String messageLeave = ZanderHubMain.plugin.getConfig().getString("messages.leave");
-
+        // create an instance of the config and instate join/leave messages
         messageConfig = new MessageConfig(ZanderHubMain.plugin);
-        messageConfig.setupJoinLeave(messageJoin, messageLeave);
+        messageConfig.setupJoinLeave(
+                config.getString("messages.join"),
+                config.getString("messages.leave"));
     }
 
     public static MessageConfig getMessage() {
+        if (messageConfig == null) {
+            throw new IllegalStateException("Bad order of execution, first run 'setupMessage'");
+        }
         return messageConfig;
     }
 }

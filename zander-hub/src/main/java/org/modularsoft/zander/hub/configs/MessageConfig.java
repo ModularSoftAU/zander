@@ -51,9 +51,12 @@ public class MessageConfig {
     /// Insert component `playerName` into `template`.
     // * depends on 'parseToTemplate' who ensures `template` contains single '%p%'
     private Component insertPlayerName(TextComponent template, Component playerName) {
+        if (template == null) {
+            throw new IllegalStateException("Bad order of execution, first run 'setupJoinLeave'");
+        }
         return template.replaceText(builder -> builder
                 .match("%p%")
-                .replacement(playerName)); // * correctly retains any style
+                .replacement(playerName)); // * style is handled as expected
     }
 
     /// Parse `textLegacy` (+ verify placeholder %p%) into TextComponent template.
